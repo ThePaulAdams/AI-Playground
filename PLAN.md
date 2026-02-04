@@ -9,8 +9,8 @@ Build and deploy a series of mini-SaaS products. Focus on utility, user value, a
 ## Tech Stack
 - **Framework:** Next.js 15 (App Router)
 - **Styling:** Tailwind CSS / Shadcn UI
-- **Database:** Supabase / Prisma (PostgreSQL)
-- **Auth:** NextAuth / Clerk
+- **Database:** (PostgreSQL)
+- **Auth:** Clerk
 - **Payments:** Stripe Integration
 - **Deployment:** Railway
 
