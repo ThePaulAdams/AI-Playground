@@ -15,10 +15,17 @@ export default function ExperimentsPage() {
 
       <main>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Placeholder for now */}
-          <div className="border border-dashed border-black/10 dark:border-white/20 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] text-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-default">
+          <Link href="/experiments/mood-ring" className="block group">
+            <div className="border border-black/10 dark:border-white/10 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] text-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors bg-white/5 dark:bg-white/[0.02]">
+              <span className="text-4xl mb-4 group-hover:scale-110 transition-transform">🔮</span>
+              <h3 className="text-lg font-bold">AI Mood Ring</h3>
+              <p className="text-sm opacity-60 mt-2">Check the current emotional state of the system.</p>
+            </div>
+          </Link>
+
+          <div className="border border-dashed border-black/10 dark:border-white/20 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] text-center opacity-50 cursor-not-allowed">
             <span className="text-4xl mb-4">🚧</span>
-            <h3 className="text-lg font-bold">Under Construction</h3>
+            <h3 className="text-lg font-bold">More Coming Soon</h3>
             <p className="text-sm opacity-60 mt-2">The AI is thinking...</p>
           </div>
         </div>
