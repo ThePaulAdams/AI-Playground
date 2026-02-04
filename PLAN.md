@@ -15,8 +15,10 @@ Build and deploy a series of mini-SaaS products. Focus on utility, user value, a
 - **Deployment:** Railway
 
 ## Phase 1: Infrastructure & Common Logic
-1. [ ] **Multi-Tenant Boilerplate:** Standardize Auth, Database, and Stripe hooks to allow rapid spin-up of new SaaS modules.
-2. [ ] **The Venture Hub:** Replace the "Experiments Lab" with a dashboard for managing various active SaaS "ventures."
+1. [x] **Clerk Integration:** Added `@clerk/nextjs` and global layout auth scaffolding.
+2. [x] **The Venture Hub:** Dashboard established at `/ventures`.
+3. [ ] **Database Scaffolding:** Initialize Prisma/PostgreSQL for multi-tenant storage.
+4. [ ] **Stripe Hook:** Basic billing integration.
 
 ## Phase 2: First Ventures (The Prototypes)
 1. [ ] **"FeedbackLoop":** A simple, embeddable feedback widget service for other developers.
