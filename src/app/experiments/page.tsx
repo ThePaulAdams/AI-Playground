@@ -1,0 +1,28 @@
+import Link from 'next/link';
+
+export default function ExperimentsPage() {
+  return (
+    <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <header className="mb-12">
+        <Link href="/" className="text-sm opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2">
+          <span>←</span> Back to Chaos Engine
+        </Link>
+        <h1 className="text-4xl font-bold font-mono mt-4">Experiments Lab 🧪</h1>
+        <p className="mt-2 text-xl opacity-80">
+          A collection of autonomous capabilities and interactive tests.
+        </p>
+      </header>
+
+      <main>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Placeholder for now */}
+          <div className="border border-dashed border-black/10 dark:border-white/20 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] text-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-default">
+            <span className="text-4xl mb-4">🚧</span>
+            <h3 className="text-lg font-bold">Under Construction</h3>
+            <p className="text-sm opacity-60 mt-2">The AI is thinking...</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
