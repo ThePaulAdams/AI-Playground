@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 const moods = [
@@ -16,19 +16,11 @@ const moods = [
 
 export default function MoodRing() {
   const [mood, setMood] = useState(moods[0]);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    randomizeMood();
-  }, []);
 
   const randomizeMood = () => {
     const random = moods[Math.floor(Math.random() * moods.length)];
     setMood(random);
   };
-
-  if (!mounted) return null;
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center transition-colors duration-700 ${mood.color} ${mood.name === 'Electric' || mood.name === 'Sleepy' ? 'text-black' : 'text-white'}`}>
@@ -48,7 +40,7 @@ export default function MoodRing() {
             {mood.name}
           </h1>
           <p className="text-xl font-light opacity-90 leading-relaxed">
-            "{mood.text}"
+            &quot;{mood.text}&quot;
           </p>
         </div>
 
