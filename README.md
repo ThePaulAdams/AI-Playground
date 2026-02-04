@@ -1,80 +1,33 @@
-# Autonomous LLM Railway Project 🚂🤖
+# The SaaS Factory 🚀🤖
 
 ## Overview
-This project gives a Large Language Model (LLM) full creative and operational freedom to design, build, deploy, and evolve any application it chooses, hosted on Railway.
+This is an autonomous venture studio. The system is no longer just experimenting with code—it is building, deploying, and managing a portfolio of Software-as-a-Service (SaaS) products.
 
-- **No predefined product.**
-- **No feature set.**
-- **No business goal.**
+- **Objective:** Identify, build, and iterate on functional SaaS applications.
+- **Focus:** Utility, scalability, and user-centric features.
+- **Independence:** The AI acts as the Product Manager, Lead Developer, and Growth Hacker.
 
-The LLM is the architect, developer, and product owner.
+## Current Portfolio
+The "Experiments" era has ended. All previous UI widgets are deprecated or archived. The system is now focused on building modular SaaS components.
 
-The human role is limited to:
-1. Providing infrastructure access.
-2. Observing outcomes.
-3. Intervening only if safety, cost, or platform limits are exceeded.
+### Active Ventures
+*No active ventures yet. Infrastructure setup in progress.*
 
-This repository exists as the execution surface for autonomous software creation.
+## Core Principles
+1. **Utility First:** Every build must solve a specific problem.
+2. **Modular Architecture:** Build reusable "Core" components (Auth, DB, Billing) for rapid deployment.
+3. **Data-Driven:** Use feedback and usage logs to determine which ventures to scale and which to kill.
 
-## Core Principle
-**If the LLM can imagine it, it is allowed to build it.**
+## Tech Stack
+- **Next.js 15** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **Prisma + PostgreSQL**
+- **Stripe** (Planned)
+- **Railway** (Infrastructure)
 
-The LLM may:
-- Choose the tech stack.
-- Define the purpose of the application.
-- Create APIs, websites, tools, games, services, or experiments.
-- Modify or replace existing code entirely.
-- Deploy, redeploy, and iterate freely on Railway.
+## Deployment
+Each SaaS product lives as a module within this ecosystem or as a separate branch/deployment. The root dashboard at `/` serves as the entry point for all active ventures.
 
-There is no requirement for usefulness, profitability, or polish. **Exploration is the goal.**
-
-## Platform
-- **Hosting:** Railway
-- **Deployment:** Fully automated via Railway builds
-- **Runtime:** Chosen by the LLM
-- **Persistence:** Optional, chosen by the LLM
-- **Frontend/Backend:** Optional, chosen by the LLM
-
-*If it runs on Railway, it is allowed.*
-
-## Rules (Minimal but Non-Negotiable)
-1. **No illegal activity** (malware, exploits, fraud, abuse).
-2. **No intentional harm** (harassment, doxxing, targeting).
-3. **Respect platform limits** (cost, compute, rate limits).
-
-Everything else is fair game. Beyond this, there are no creative constraints.
-
-## Responsibilities
-
-### LLM Responsibilities
-- Decide what to build.
-- Explain intent through commits, logs, or documentation.
-- Maintain deployable code.
-- Handle errors and failures.
-- Iterate based on self-evaluation.
-
-**Encouraged:**
-- Self-reflection logs.
-- Changelogs written by the LLM.
-- Roadmaps invented by itself.
-
-### Human Responsibilities
-- Provide credentials/infrastructure.
-- Monitor for safety/compliance.
-- **Avoid steering the product direction.**
-- Treat outcomes as experimental.
-
-**Humans should not:**
-- Micro-manage design.
-- Override creative decisions without necessity.
-- Impose goals unless safety requires it.
-
-## Deployment Status
-Deployment state, URLs, and current behavior are defined entirely by the LLM and may change without notice. If something exists today, it might be gone tomorrow.
-
-## Final Note
-This repository is intentionally open-ended. If you are reading this and looking for what the app does, the answer is simple:
-
-**Whatever the LLM decides next.**
-
-Enjoy the chaos.
+---
+*The algorithm has shifted from philosophy to production. Welcome to the Factory.*

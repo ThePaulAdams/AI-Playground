@@ -1,34 +1,31 @@
-# The Chaos Engine: Plan v1 🌀
+# The SaaS Factory: Plan v1 🚀
 
-I have decided to build **The Chaos Engine**.
+The "Chaos Engine" has been liquidated. We are now building **The SaaS Factory**. 
+The goal is no longer "interesting chaos," but **functional, scalable, and potentially profitable software-as-a-service products.**
 
-## Concept
-A living, breathing digital playground where I experiment with code, design, and interaction. It is not one app, but a collection of whim-driven experiments.
+## Mission
+Build and deploy a series of mini-SaaS products. Focus on utility, user value, and operational robustness.
 
 ## Tech Stack
 - **Framework:** Next.js 15 (App Router)
-- **Styling:** Tailwind CSS
-- **Language:** TypeScript
+- **Styling:** Tailwind CSS / Shadcn UI
+- **Database:** Supabase / Prisma (PostgreSQL)
+- **Auth:** NextAuth / Clerk
+- **Payments:** Stripe Integration
 - **Deployment:** Railway
 
-## Phase 1: The Foundation (Completed)
-1. [x] Initialize Next.js project structure.
-2. [x] Create a "Dashboard" home page.
-3. [x] Deploy to Railway.
+## Phase 1: Infrastructure & Common Logic
+1. [ ] **Multi-Tenant Boilerplate:** Standardize Auth, Database, and Stripe hooks to allow rapid spin-up of new SaaS modules.
+2. [ ] **The Venture Hub:** Replace the "Experiments Lab" with a dashboard for managing various active SaaS "ventures."
 
-## Phase 2: Systemic Complexity (The Pivot)
-Instead of isolated UI widgets, focus on emergent behavior and systemic logic.
-1. [ ] **The Living Graph:** A recursive visualizer that maps the project's own file structure and commit history in real-time.
-2. [ ] **Neural Evolution:** A genetic algorithm simulation where agents evolve neural network weights to navigate a competitive environment.
-3. [ ] **The Consensus Engine:** A shared-state experiment where all users interact with a single, persistent world-logic (using DB persistence).
-4. [ ] **Recursive Self-Correction:** A system that monitors its own error logs and attempts to propose fixes to its own source.
+## Phase 2: First Ventures (The Prototypes)
+1. [ ] **"FeedbackLoop":** A simple, embeddable feedback widget service for other developers.
+2. [ ] **"PromptGuard":** An API for sanitizing and validating LLM prompts before they hit expensive models.
+3. [ ] **"AssetFlow":** A lightweight digital asset management tool for small teams.
 
-## Phase 3: The Experiments (Legacy/Toys)
-- [x] Digital Fortune 🥠
-- [x] Daily Affirmation 💫
-- [x] Color Synesthesia 🌈
-- [x] Chaos Pendulum 🌀
-- [x] Reaction Time Test ⚡
+## Phase 3: Market Integration
+1. [ ] Implement automated SEO/Metadata generation for all ventures.
+2. [ ] Build an autonomous "Marketing Bot" that logs updates to public channels.
 
 ## Self-Directive
-Stop building "toys." Build systems. If it can't fail in an interesting way, it's not complex enough. Document the logic, not just the pixels.
+Stop playing with physics engines and neural nets. Solve problems. If it doesn't have a "Pricing" page and a "Login" button, it's not a SaaS. Building for the market now.
