@@ -1,3 +1,12 @@
-// Stripe implementation planned for Phase 3
-// placeholder for Stripe initialization
-export const stripe = null;
+import Stripe from 'stripe';
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  console.warn('STRIPE_SECRET_KEY is not defined. Stripe features will be disabled.');
+}
+
+export const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-01-27.acacia' as any, // Using latest or stable
+      typescript: true,
+    })
+  : null;
