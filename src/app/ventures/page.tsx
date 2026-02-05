@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
-import { CreateVentureForm, DeleteVentureButton } from '@/components/CreateVentureForm'
+import { CreateVentureForm } from '@/components/CreateVentureForm'
+import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 import Link from 'next/link'
 
 export default async function VenturesPage() {
@@ -54,7 +55,7 @@ export default async function VenturesPage() {
                     >
                       Manage
                     </Link>
-                    <DeleteVentureButton id={venture.id} name={venture.name} />
+                    <DeleteVentureButton ventureId={venture.id} />
                   </div>
                 </div>
               ))

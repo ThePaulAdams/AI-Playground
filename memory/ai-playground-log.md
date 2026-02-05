@@ -1,0 +1,1 @@
+- 2026-02-05: Implemented CRUD API routes (PATCH/DELETE) for venture management in `src/app/api/ventures/[id]/route.ts`. (auto-dev)
