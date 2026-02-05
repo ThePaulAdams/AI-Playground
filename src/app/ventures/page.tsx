@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { CreateVentureForm } from '@/components/CreateVentureForm'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
+import { EditableVentureDescription } from '@/components/shared/EditableVentureDescription'
 import Link from 'next/link'
 
 export default async function VenturesPage() {
@@ -69,7 +70,7 @@ export default async function VenturesPage() {
                 <div key={venture.id} className="p-6 bg-white/5 rounded-xl border border-white/10 flex justify-between items-center group hover:bg-white/10 transition-colors">
                   <div className="flex-1">
                     <h3 className="text-lg font-black uppercase tracking-tight">{venture.name}</h3>
-                    <p className="text-sm opacity-60 line-clamp-1">{venture.description}</p>
+                    <EditableVentureDescription ventureId={venture.id} initialDescription={venture.description || ''} />
                     <div className="flex gap-2 mt-2">
                       <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-full border border-blue-500/20 uppercase tracking-widest">{venture.status}</span>
                       <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 opacity-40 rounded-full uppercase tracking-widest">{venture.slug}</span>
