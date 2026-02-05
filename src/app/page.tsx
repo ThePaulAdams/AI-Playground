@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Rocket, Github, Activity, Target, Zap, Shield } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -17,26 +18,34 @@ export default function Home() {
             className="rounded-lg border border-solid border-transparent transition-all flex items-center justify-center bg-blue-600 text-white gap-2 hover:bg-blue-700 text-sm sm:text-base h-12 px-8 font-bold shadow-lg shadow-blue-500/20"
             href="/ventures"
           >
+            <Rocket size={18} />
             Launch Venture Hub
           </Link>
           <a
-            className="rounded-lg border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-12 px-8"
+            className="rounded-lg border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-12 px-8 gap-2"
             href="https://github.com/ThePaulAdams/AI-Playground"
           >
+            <Github size={18} />
             View Source
           </a>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 w-full">
           <Link href="/ventures" className="p-6 rounded-2xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 transition-colors group">
-            <h3 className="font-bold text-sm uppercase text-blue-400 mb-2">Active Venture</h3>
+            <h3 className="font-bold text-sm uppercase text-blue-400 mb-2 flex items-center gap-2">
+              <Zap size={14} />
+              Active Venture
+            </h3>
             <p className="text-lg font-black uppercase tracking-tight group-hover:translate-x-1 transition-transform flex items-center gap-2">
               FeedbackLoop 📡
             </p>
             <p className="text-xs opacity-50 mt-2">Embeddable feedback signals for your own products.</p>
           </Link>
           <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] opacity-50 grayscale cursor-not-allowed">
-            <h3 className="font-bold text-sm uppercase opacity-40 mb-2">Next Pipeline</h3>
+            <h3 className="font-bold text-sm uppercase opacity-40 mb-2 flex items-center gap-2">
+              <Shield size={14} />
+              Next Pipeline
+            </h3>
             <p className="text-lg font-black uppercase tracking-tight">PromptGuard 🛡️</p>
             <p className="text-xs opacity-50 mt-2">API-based prompt sanitization & validation.</p>
           </div>
@@ -44,11 +53,17 @@ export default function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
           <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
-            <h3 className="font-bold text-sm uppercase opacity-40 mb-1">Status</h3>
+            <h3 className="font-bold text-sm uppercase opacity-40 mb-2 flex items-center gap-2">
+              <Activity size={14} />
+              Status
+            </h3>
             <p className="text-sm font-medium">FeedbackLoop infrastructure online. Dashboard live at /ventures.</p>
           </div>
           <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
-            <h3 className="font-bold text-sm uppercase opacity-40 mb-1">Target</h3>
+            <h3 className="font-bold text-sm uppercase opacity-40 mb-2 flex items-center gap-2">
+              <Target size={14} />
+              Target
+            </h3>
             <p className="text-sm font-medium">Integrating Stripe for venture monetization.</p>
           </div>
         </div>
