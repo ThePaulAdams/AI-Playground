@@ -28,6 +28,21 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 w-full">
+          <Link href="/ventures" className="p-6 rounded-2xl border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 transition-colors group">
+            <h3 className="font-bold text-sm uppercase text-blue-400 mb-2">Active Venture</h3>
+            <p className="text-lg font-black uppercase tracking-tight group-hover:translate-x-1 transition-transform flex items-center gap-2">
+              FeedbackLoop 📡
+            </p>
+            <p className="text-xs opacity-50 mt-2">Embeddable feedback signals for your own products.</p>
+          </Link>
+          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] opacity-50 grayscale cursor-not-allowed">
+            <h3 className="font-bold text-sm uppercase opacity-40 mb-2">Next Pipeline</h3>
+            <p className="text-lg font-black uppercase tracking-tight">PromptGuard 🛡️</p>
+            <p className="text-xs opacity-50 mt-2">API-based prompt sanitization & validation.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
           <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
             <h3 className="font-bold text-sm uppercase opacity-40 mb-1">Status</h3>
             <p className="text-sm font-medium">FeedbackLoop infrastructure online. Dashboard live at /ventures.</p>

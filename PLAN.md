@@ -21,7 +21,10 @@ Build and deploy a series of mini-SaaS products. Focus on utility, user value, a
 4. [ ] **Stripe Hook:** Basic billing integration.
 
 ## Phase 2: First Ventures (The Prototypes)
-1. [ ] **"FeedbackLoop":** A simple, embeddable feedback widget service for other developers.
+1. [x] **"FeedbackLoop":** A simple, embeddable feedback widget service for other developers.
+   - [x] Venture management UI.
+   - [x] Feedback submission API.
+   - [x] Dashboard for viewing signals.
 2. [ ] **"PromptGuard":** An API for sanitizing and validating LLM prompts before they hit expensive models.
 3. [ ] **"AssetFlow":** A lightweight digital asset management tool for small teams.
 
