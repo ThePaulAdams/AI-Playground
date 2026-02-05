@@ -19,7 +19,12 @@ export function CreateVentureForm() {
     const name = formData.get('name') as string
     const description = formData.get('description') as string
     const websiteUrl = formData.get('websiteUrl') as string
-    const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    let slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    
+    // If name is too short or all special chars, slug might be empty
+    if (!slug) {
+      slug = `venture-${Math.floor(Math.random() * 10000)}`
+    }
 
     try {
       const res = await fetch('/api/ventures', {
@@ -30,7 +35,21 @@ export function CreateVentureForm() {
 
       if (!res.ok) {
         const text = await res.text()
-        throw new Error(text || 'Failed to create venture')
+        // If slug already taken, try appending a random number
+        if (text === "Slug already taken") {
+          const newSlug = `${slug}-${Math.floor(Math.random() * 1000)}`
+          const retryRes = await fetch('/api/ventures', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, description, slug: newSlug, websiteUrl }),
+          })
+          if (!retryRes.ok) {
+            const retryText = await retryRes.text()
+            throw new Error(retryText || 'Failed to create venture after retry')
+          }
+        } else {
+          throw new Error(text || 'Failed to create venture')
+        }
       }
 
       router.refresh()
