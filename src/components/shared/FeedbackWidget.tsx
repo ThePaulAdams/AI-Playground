@@ -37,46 +37,60 @@ export function FeedbackWidget({ ventureId }: { ventureId: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white/5 border border-white/10 rounded-xl">
-      <div className="flex justify-between items-center">
-        <label className="text-xs font-bold uppercase opacity-50">Rating</label>
-        <div className="flex gap-1">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              type="button"
-              onClick={() => setRating(star)}
-              className={`text-xl transition-transform active:scale-90 ${rating >= star ? 'grayscale-0' : 'grayscale opacity-30'}`}
-            >
-              ⭐
-            </button>
-          ))}
+    <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white/5 border border-white/10 rounded-xl">
+        <div className="flex justify-between items-center">
+          <label className="text-xs font-bold uppercase opacity-50">Rating</label>
+          <div className="flex gap-1">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                type="button"
+                onClick={() => setRating(star)}
+                className={`text-xl transition-transform active:scale-90 ${rating >= star ? 'grayscale-0' : 'grayscale opacity-30'}`}
+              >
+                ⭐
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+        
+        <textarea
+          required
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-blue-500 min-h-[100px]"
+          placeholder="What can we improve?"
+        />
+
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500"
+          placeholder="Email (optional)"
+        />
+
+        <button
+          disabled={status === 'loading'}
+          className="w-full bg-white text-black font-bold py-2 rounded-lg hover:bg-opacity-90 transition-colors text-sm uppercase tracking-tight"
+        >
+          {status === 'loading' ? 'Sending...' : 'Submit Feedback'}
+        </button>
+        {status === 'error' && <p className="text-red-500 text-xs text-center">Failed to send. Try again.</p>}
+      </form>
       
-      <textarea
-        required
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-blue-500 min-h-[100px]"
-        placeholder="What can we improve?"
-      />
-
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500"
-        placeholder="Email (optional)"
-      />
-
-      <button
-        disabled={status === 'loading'}
-        className="w-full bg-white text-black font-bold py-2 rounded-lg hover:bg-opacity-90 transition-colors text-sm uppercase tracking-tight"
-      >
-        {status === 'loading' ? 'Sending...' : 'Submit Feedback'}
-      </button>
-      {status === 'error' && <p className="text-red-500 text-xs text-center">Failed to send. Try again.</p>}
-    </form>
+      <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+        <h4 className="text-[10px] font-bold uppercase opacity-40 mb-2">Embed Code (Prototype)</h4>
+        <pre className="text-[9px] font-mono bg-black/40 p-2 rounded border border-white/5 overflow-x-auto">
+{`<iframe 
+  src="https://factory.paul.dev/embed/${ventureId}" 
+  width="100%" 
+  height="400" 
+  frameborder="0"
+></iframe>`}
+        </pre>
+      </div>
+    </div>
   )
 }
