@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
-import { ExternalLink, Terminal } from 'lucide-react'
+import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default async function VentureDetailsPage({
   params
