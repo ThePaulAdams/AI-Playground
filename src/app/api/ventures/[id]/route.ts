@@ -14,7 +14,7 @@ export async function DELETE(
   }
 
   try {
-    // Delete feedbacks first (cascading if not configured in DB)
+    // Cascade delete manually for now
     await prisma.feedback.deleteMany({
       where: { ventureId: id }
     })
@@ -22,7 +22,7 @@ export async function DELETE(
     const venture = await prisma.venture.delete({
       where: {
         id,
-        userId // Ensure user owns it
+        userId // Verification
       },
     })
 
