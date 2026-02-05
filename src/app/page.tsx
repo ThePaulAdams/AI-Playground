@@ -41,14 +41,16 @@ export default function Home() {
             </p>
             <p className="text-xs opacity-50 mt-2">Embeddable feedback signals for your own products.</p>
           </Link>
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] opacity-50 grayscale cursor-not-allowed">
-            <h3 className="font-bold text-sm uppercase opacity-40 mb-2 flex items-center gap-2">
-              <Shield size={14} />
-              Next Pipeline
+          <Link href="/ventures/insights" className="p-6 rounded-2xl border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 transition-colors group">
+            <h3 className="font-bold text-sm uppercase text-purple-400 mb-2 flex items-center gap-2">
+              <Activity size={14} />
+              Global Insights
             </h3>
-            <p className="text-lg font-black uppercase tracking-tight">PromptGuard 🛡️</p>
-            <p className="text-xs opacity-50 mt-2">API-based prompt sanitization & validation.</p>
-          </div>
+            <p className="text-lg font-black uppercase tracking-tight group-hover:translate-x-1 transition-transform flex items-center gap-2">
+              Live Feed 🌊
+            </p>
+            <p className="text-xs opacity-50 mt-2">Real-time aggregate feedback across all ventures.</p>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 w-full">
