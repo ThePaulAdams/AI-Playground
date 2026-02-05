@@ -5,7 +5,7 @@ import { useState } from 'react'
 interface Feedback {
   id: string
   content: string
-  sentiment: string | null
+  rating: number | null
   createdAt: string
 }
 
@@ -16,7 +16,7 @@ export function FeedbackList({ initialFeedback, ventureId }: { initialFeedback: 
   const refreshFeedback = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`/api/ventures/${ventureId}/feedback`)
+      const res = await fetch(`/api/feedback?ventureId=${ventureId}`)
       if (res.ok) {
         const data = await res.json()
         setFeedbacks(data)
@@ -50,13 +50,11 @@ export function FeedbackList({ initialFeedback, ventureId }: { initialFeedback: 
           feedbacks.map((item) => (
             <div key={item.id} className="p-4 bg-white/[0.03] border border-white/5 rounded-lg">
               <div className="flex justify-between items-start mb-2">
-                <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
-                  item.sentiment === 'positive' ? 'bg-green-500/10 text-green-400' :
-                  item.sentiment === 'negative' ? 'bg-red-500/10 text-red-400' :
-                  'bg-white/5 opacity-50'
-                }`}>
-                  {item.sentiment || 'Neutral'}
-                </span>
+                <div className="flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <span key={s} className={`text-[8px] ${ (item.rating || 0) >= s ? "text-blue-500" : "opacity-10"}`}>✦</span>
+                  ))}
+                </div>
                 <span className="text-[10px] opacity-30">
                   {new Date(item.createdAt).toLocaleDateString()}
                 </span>

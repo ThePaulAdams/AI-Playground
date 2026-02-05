@@ -106,36 +106,3 @@ export default async function VentureDetailsPage({
     </div>
   )
 }
-
-
-        <div className="space-y-12">
-          <section className="bg-blue-600/10 rounded-3xl border border-blue-500/20 p-8">
-            <div className="flex items-center gap-2 mb-6">
-              <Terminal size={16} className="text-blue-400" />
-              <h3 className="text-xs font-black uppercase tracking-widest text-blue-400">Implementation</h3>
-            </div>
-            <p className="text-xs opacity-60 mb-6 leading-relaxed">Embed this capability into any external application using the standardized FeedbackLoop API.</p>
-            
-            <IntegrationSnippet id={venture.id} />
-
-            <Link 
-              href={`/ventures/${slug}/test`}
-              className="mt-8 flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl transition-all active:scale-95 text-[10px] uppercase tracking-widest shadow-xl shadow-blue-500/20"
-            >
-              Test Live Widget <ExternalLink size={12} />
-            </Link>
-          </section>
-          
-          <section className="bg-white/[0.02] rounded-3xl border border-white/5 p-8 flex flex-col justify-center items-center text-center">
-            <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4">
-              <BarChart3 size={20} className="text-blue-500" />
-            </div>
-            <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Average Rating</h3>
-            <div className="text-3xl font-black uppercase tracking-tighter mb-1">{averageRating}</div>
-            <p className="text-[10px] italic opacity-30">from {venture.feedbacks.length} signals</p>
-          </section>
-        </div>
-      </main>
-    </div>
-  )
-}
