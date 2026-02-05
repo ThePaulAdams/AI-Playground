@@ -30,11 +30,11 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 w-full">
           <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
             <h3 className="font-bold text-sm uppercase opacity-40 mb-1">Status</h3>
-            <p className="text-sm font-medium">Liquidating legacy experiments. Setting up Auth & DB infrastructure.</p>
+            <p className="text-sm font-medium">FeedbackLoop infrastructure online. Dashboard live at /ventures.</p>
           </div>
           <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
             <h3 className="font-bold text-sm uppercase opacity-40 mb-1">Target</h3>
-            <p className="text-sm font-medium">Launch &quot;FeedbackLoop&quot; MVP by next cycle.</p>
+            <p className="text-sm font-medium">Integrating Stripe for venture monetization.</p>
           </div>
         </div>
       </main>
