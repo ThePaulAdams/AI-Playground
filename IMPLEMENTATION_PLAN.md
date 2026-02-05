@@ -7,10 +7,12 @@
 
 ## Phase 2: FeedbackLoop MVP (In Progress)
 - [x] **Infrastructure:** Fixed Prisma 7 initialization by implementing `@prisma/adapter-pg`.
+- [x] **Venture Config:** Added PATCH endpoints for SaaS status and metadata updates.
 - [x] **Task 1:** Create Venture management UI (Create/List) in `/ventures`.
 - [x] **Task 2:** Build API endpoint for feedback submission (`/api/feedback`).
 - [x] **Task 3:** Build feedback widget dashboard for individual ventures.
 
 ## Phase 3: Stripe & Scaling
-- [ ] Stripe checkout integration.
-- [ ] Multi-tenant billing logic.
+- [x] Stripe webhook route initialization.
+- [x] Stripe checkout session API.
+- [ ] Multi-tenant billing logic integration.
