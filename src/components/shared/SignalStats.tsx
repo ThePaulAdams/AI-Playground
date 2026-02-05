@@ -28,7 +28,17 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
   // Recent Trend (last 24h vs previous)
   const now = new Date()
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+  const fortyEightHoursAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000)
+  
   const recentSignals = signals.filter(s => new Date(s.createdAt) > twentyFourHoursAgo).length
+  const previousSignals = signals.filter(s => {
+    const d = new Date(s.createdAt)
+    return d <= twentyFourHoursAgo && d > fortyEightHoursAgo
+  }).length
+
+  const signalGrowth = previousSignals === 0 
+    ? (recentSignals > 0 ? 100 : 0)
+    : Math.round(((recentSignals - previousSignals) / previousSignals) * 100)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -48,9 +58,19 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
         </div>
         <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Total Signals</h3>
         <div className="text-2xl font-black uppercase tracking-tighter text-purple-400">{signals.length}</div>
-        {recentSignals > 0 && (
-          <div className="mt-1 text-[8px] font-black text-purple-500/60 uppercase">+{recentSignals} in 24h</div>
-        )}
+        <div className="mt-1 flex items-center gap-1.5">
+          {recentSignals > 0 && (
+            <div className="text-[8px] font-black text-purple-500/60 uppercase">+{recentSignals} in 24h</div>
+          )}
+          {signalGrowth !== 0 && (
+            <div className={cn(
+              "text-[8px] font-black uppercase px-1.5 py-0.5 rounded-md",
+              signalGrowth > 0 ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+            )}>
+              {signalGrowth > 0 ? '↑' : '↓'} {Math.abs(signalGrowth)}%
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
