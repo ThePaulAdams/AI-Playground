@@ -83,6 +83,17 @@ export default async function VentureDetailsPage({
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-blue-600/10 rounded-2xl border border-blue-500/20 p-8">
+            <h3 className="text-lg font-black uppercase tracking-tight mb-2">Live Testing</h3>
+            <p className="text-sm opacity-70 mb-4">View the public feedback widget for this venture.</p>
+            <Link 
+              href={`/ventures/${slug}/test`}
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors text-xs uppercase"
+            >
+              Launch Test Page
+            </Link>
+          </div>
+
+          <div className="bg-white/5 rounded-2xl border border-white/10 p-8">
             <h3 className="text-lg font-black uppercase tracking-tight mb-2">Integration Snippet</h3>
             <p className="text-sm opacity-70 mb-4">Use this ID to submit feedback via the API:</p>
             <pre className="bg-black/40 p-4 rounded-lg text-xs font-mono overflow-x-auto border border-white/10">
@@ -95,7 +106,9 @@ export default async function VentureDetailsPage({
 }`}
             </pre>
           </div>
-          
+        </section>
+
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white/5 rounded-2xl border border-white/10 p-8 flex flex-col justify-center items-center text-center opacity-50 grayscale cursor-not-allowed">
             <span className="text-3xl mb-2">📈</span>
             <h3 className="text-lg font-black uppercase tracking-tight">Analytics</h3>
