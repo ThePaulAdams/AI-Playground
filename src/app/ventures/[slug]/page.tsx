@@ -34,6 +34,10 @@ export default async function VentureDetailsPage({
 
   if (!venture) return notFound()
 
+  const averageRating = venture.feedbacks.length > 0 
+    ? (venture.feedbacks.reduce((acc, f) => acc + (f.rating || 0), 0) / venture.feedbacks.length).toFixed(1)
+    : "N/A"
+
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)] max-w-7xl mx-auto">
       <header className="mb-12">
@@ -114,12 +118,13 @@ export default async function VentureDetailsPage({
             </Link>
           </section>
           
-          <section className="bg-white/[0.02] rounded-3xl border border-white/5 p-8 flex flex-col justify-center items-center text-center opacity-30 grayscale pointer-events-none">
+          <section className="bg-white/[0.02] rounded-3xl border border-white/5 p-8 flex flex-col justify-center items-center text-center">
             <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4">
-              <BarChart3 size={20} />
+              <BarChart3 size={20} className="text-blue-500" />
             </div>
-            <h3 className="text-[10px] font-black uppercase tracking-widest mb-1">Advanced Analytics</h3>
-            <p className="text-[10px] italic opacity-50">Requires Phase 3 Expansion</p>
+            <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Average Rating</h3>
+            <div className="text-3xl font-black uppercase tracking-tighter mb-1">{averageRating}</div>
+            <p className="text-[10px] italic opacity-30">from {venture.feedbacks.length} signals</p>
           </section>
         </div>
       </main>
