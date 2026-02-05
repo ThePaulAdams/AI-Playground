@@ -41,7 +41,7 @@ export default async function InsightsPage() {
     : "0.0"
 
   const latestFeedbacks = ventures
-    .flatMap(v => v.feedbacks.map(f => ({ ...f, ventureName: v.name })))
+    .flatMap(v => v.feedbacks.map(f => ({ ...f, ventureName: v.name, ventureSlug: v.slug })))
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, 10)
 
@@ -101,12 +101,15 @@ export default async function InsightsPage() {
                 </div>
               ) : (
                 latestFeedbacks.map((item) => (
-                  <div key={item.id} className="p-6 bg-white/[0.03] rounded-2xl border border-white/5 hover:border-blue-500/30 transition-all group">
+                  <div key={item.id} className="p-6 bg-white/[0.03] rounded-2xl border border-white/5 hover:border-blue-500/30 transition-all group relative">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-black uppercase bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded border border-blue-500/20">
+                        <Link 
+                          href={`/ventures/${item.ventureSlug}`}
+                          className="text-[10px] font-black uppercase bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded border border-blue-500/20 hover:bg-blue-500/20 transition-colors"
+                        >
                           {item.ventureName}
-                        </span>
+                        </Link>
                         <div className="flex gap-0.5">
                           {[1, 2, 3, 4, 5].map((s) => (
                             <span key={s} className={`text-[8px] ${(item.rating || 0) >= s ? "text-blue-500" : "opacity-10"}`}>✦</span>
@@ -128,18 +131,18 @@ export default async function InsightsPage() {
             <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Portfolio Distribution</h2>
             <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
               {portfolioDistribution.map((item) => (
-                <div key={item.name} className="space-y-2">
+                <Link key={item.name} href={`/ventures/${ventures.find(v => v.name === item.name)?.slug}`} className="block space-y-2 group">
                   <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                    <span className="opacity-50">{item.name}</span>
+                    <span className="opacity-50 group-hover:opacity-100 transition-opacity">{item.name}</span>
                     <span className="text-blue-500">{item.percentage}%</span>
                   </div>
                   <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-blue-500 rounded-full transition-all duration-1000" 
+                      className="h-full bg-blue-500 rounded-full transition-all duration-1000 group-hover:bg-blue-400" 
                       style={{ width: `${item.percentage}%` }}
                     />
                   </div>
-                </div>
+                </Link>
               ))}
               {ventures.length === 0 && (
                 <div className="text-[10px] opacity-20 text-center py-4 uppercase font-black">No data available</div>
@@ -149,16 +152,16 @@ export default async function InsightsPage() {
             <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Venture Leaderboard</h2>
             <div className="space-y-2">
               {ventures.sort((a, b) => b.feedbacks.length - a.feedbacks.length).map((v) => (
-                <div key={v.id} className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-xl">
+                <Link key={v.id} href={`/ventures/${v.slug}`} className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-xl hover:border-blue-500/30 transition-all group">
                   <div className="flex flex-col">
-                    <span className="text-xs font-black uppercase tracking-tight">{v.name}</span>
+                    <span className="text-xs font-black uppercase tracking-tight group-hover:text-blue-400 transition-colors">{v.name}</span>
                     <span className="text-[9px] opacity-30 uppercase tracking-widest">{v.status}</span>
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-black">{v.feedbacks.length}</div>
                     <div className="text-[8px] opacity-30 uppercase">signals</div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
