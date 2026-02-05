@@ -16,6 +16,15 @@ export async function POST(req: Request) {
       return new NextResponse("Missing required fields", { status: 400 })
     }
 
+    // Check if slug is already taken
+    const existing = await prisma.venture.findUnique({
+      where: { slug }
+    })
+
+    if (existing) {
+      return new NextResponse("Slug already taken", { status: 400 })
+    }
+
     const venture = await prisma.venture.create({
       data: {
         name,
