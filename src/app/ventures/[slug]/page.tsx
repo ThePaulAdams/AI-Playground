@@ -8,6 +8,7 @@ import { VentureSlugEditor } from '@/components/shared/VentureSlugEditor'
 import { EditableHeader } from '@/components/shared/EditableHeader'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
+import { SignalStats } from '@/components/shared/SignalStats'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -75,6 +76,7 @@ export default async function VentureDetailsPage({
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2 space-y-12">
           <section>
+            <SignalStats signals={venture.feedbacks} />
             <FeedbackList initialFeedback={serializableFeedbacks} ventureId={venture.id} />
           </section>
         </div>
@@ -112,15 +114,6 @@ export default async function VentureDetailsPage({
             </Link>
           </section>
           
-          <section className="bg-white/[0.02] rounded-3xl border border-white/5 p-8 flex flex-col justify-center items-center text-center">
-            <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4">
-              <BarChart3 size={20} className="text-blue-500" />
-            </div>
-            <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Average Rating</h3>
-            <div className="text-3xl font-black uppercase tracking-tighter mb-1">{averageRating}</div>
-            <p className="text-[10px] italic opacity-30">from {venture.feedbacks.length} signals</p>
-          </section>
-
           {recentFeedback.length > 0 && (
             <section className="bg-white/[0.02] rounded-3xl border border-white/5 p-8">
               <h3 className="text-[10px] font-black uppercase tracking-widest mb-6 opacity-30">Recent Activity</h3>
