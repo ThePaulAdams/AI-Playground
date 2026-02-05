@@ -17,7 +17,7 @@ Build and deploy a series of mini-SaaS products. Focus on utility, user value, a
 ## Phase 1: Infrastructure & Common Logic
 1. [x] **Clerk Integration:** Added `@clerk/nextjs` and global layout auth scaffolding.
 2. [x] **The Venture Hub:** Dashboard established at `/ventures`.
-3. [ ] **Database Scaffolding:** Initialize Prisma/PostgreSQL for multi-tenant storage.
+3. [x] **Database Scaffolding:** Initialized Prisma with `Venture` and `Feedback` models.
 4. [ ] **Stripe Hook:** Basic billing integration.
 
 ## Phase 2: First Ventures (The Prototypes)

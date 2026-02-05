@@ -34,7 +34,7 @@ export default function Home() {
           </div>
           <div className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02]">
             <h3 className="font-bold text-sm uppercase opacity-40 mb-1">Target</h3>
-            <p className="text-sm font-medium">Launch "FeedbackLoop" MVP by next cycle.</p>
+            <p className="text-sm font-medium">Launch &quot;FeedbackLoop&quot; MVP by next cycle.</p>
           </div>
         </div>
       </main>
