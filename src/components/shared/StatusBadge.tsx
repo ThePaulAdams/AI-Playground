@@ -2,60 +2,51 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
-interface StatusBadgeProps {
-  ventureId: string
-  currentStatus: string
-}
+const STATUSES = ['DRAFT', 'LIVE', 'MAINTENANCE', 'LIQUIDATED']
 
-const STATUSES = ['DRAFT', 'ACTIVE', 'PAUSED', 'ARCHIVED']
-
-export function StatusBadge({ ventureId, currentStatus }: StatusBadgeProps) {
-  const [status, setStatus] = useState(currentStatus)
-  const [isUpdating, setIsUpdating] = useState(false)
+export function StatusBadge({ 
+  ventureId, 
+  currentStatus 
+}: { 
+  ventureId: string, 
+  currentStatus: string 
+}) {
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
-  const toggleStatus = async () => {
-    const currentIndex = STATUSES.indexOf(status)
-    const nextIndex = (currentIndex + 1) % STATUSES.length
-    const nextStatus = STATUSES[nextIndex]
-
-    setIsUpdating(true)
+  const updateStatus = async (status: string) => {
+    setLoading(true)
     try {
-      const response = await fetch(`/api/ventures/${ventureId}`, {
+      await fetch(`/api/ventures/${ventureId}/config`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: nextStatus }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
       })
-
-      if (response.ok) {
-        setStatus(nextStatus)
-        router.refresh()
-      }
-    } catch (error) {
-      console.error('Failed to update status:', error)
+      router.refresh()
     } finally {
-      setIsUpdating(false)
+      setLoading(false)
     }
   }
 
   return (
-    <button
-      onClick={toggleStatus}
-      disabled={isUpdating}
-      className={`text-[10px] font-bold px-2 py-0.5 rounded-md border uppercase tracking-widest transition-all active:scale-95 ${
-        status === 'ACTIVE'
-          ? 'bg-green-500/10 text-green-400 border-green-500/20'
-          : status === 'PAUSED'
-          ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-          : status === 'ARCHIVED'
-          ? 'bg-red-500/10 text-red-400 border-red-500/20'
-          : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-      } ${isUpdating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:brightness-125'}`}
-    >
-      {isUpdating ? '...' : status}
-    </button>
+    <div className="flex gap-2">
+      {STATUSES.map((s) => (
+        <button
+          key={s}
+          onClick={() => updateStatus(s)}
+          disabled={loading || currentStatus === s}
+          className={cn(
+            "text-[10px] font-bold px-2 py-0.5 rounded-md border uppercase tracking-widest transition-all",
+            currentStatus === s 
+              ? "bg-blue-500/20 text-blue-400 border-blue-500/20" 
+              : "bg-white/5 text-white/20 border-transparent hover:border-white/10 hover:text-white/40"
+          )}
+        >
+          {s}
+        </button>
+      ))}
+    </div>
   )
 }
