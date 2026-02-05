@@ -21,6 +21,13 @@ export default async function InsightsPage() {
   // Calculate Aggregates
   const totalFeedbacks = ventures.reduce((acc, v) => acc + v.feedbacks.length, 0)
   
+  // Calculate Growth (Feedbacks in the last 7 days)
+  const sevenDaysAgo = new Date()
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+  const recentFeedbacksCount = ventures.reduce((acc, v) => 
+    acc + v.feedbacks.filter(f => f.createdAt >= sevenDaysAgo).length, 0
+  )
+  
   const allRatings = ventures.flatMap(v => v.feedbacks.map(f => f.rating).filter(r => r !== null)) as number[]
   const globalAverage = allRatings.length > 0 
     ? (allRatings.reduce((acc, r) => acc + r, 0) / allRatings.length).toFixed(1)
@@ -69,10 +76,10 @@ export default async function InsightsPage() {
           </div>
           <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
             <div className="flex items-center gap-2 mb-2 opacity-30">
-              <Users size={14} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Reach</span>
+              <Activity size={14} className="text-green-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-green-500">7D Growth</span>
             </div>
-            <div className="text-3xl font-black">--</div>
+            <div className="text-3xl font-black text-green-500">+{recentFeedbacksCount}</div>
           </div>
         </section>
 
