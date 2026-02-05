@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 import { StatusBadge } from '@/components/shared/StatusBadge'
-import { EditableDescription } from '@/components/shared/EditableDescription'
+import { EditableHeader } from '@/components/shared/EditableHeader'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -46,12 +46,11 @@ export default async function VentureDetailsPage({
           <span>←</span> Venture Hub
         </Link>
         <div className="flex justify-between items-end mt-6 border-b border-white/5 pb-8">
-          <div>
+          <div className="flex-1 mr-8">
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-5xl font-black uppercase tracking-tighter">{venture.name}</h1>
               <StatusBadge ventureId={venture.id} currentStatus={venture.status} />
             </div>
-            <EditableDescription ventureId={venture.id} initialDescription={venture.description} />
+            <EditableHeader ventureId={venture.id} initialName={venture.name} initialDescription={venture.description} />
           </div>
           <div className="text-right space-y-4">
             <div>

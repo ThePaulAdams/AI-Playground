@@ -13,9 +13,9 @@ export async function PATCH(
     }
 
     const { id } = await params
-    const { status, description } = await req.json()
+    const { status, description, name } = await req.json()
 
-    if (!status && description === undefined) {
+    if (!status && description === undefined && !name) {
       return new NextResponse("Missing data", { status: 400 })
     }
 
@@ -36,6 +36,7 @@ export async function PATCH(
     const data: any = {}
     if (status) data.status = status
     if (description !== undefined) data.description = description.trim()
+    if (name) data.name = name.trim()
 
     const updatedVenture = await prisma.venture.update({
       where: { id },
