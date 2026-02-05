@@ -14,10 +14,16 @@ export async function PATCH(
   }
 
   try {
-    const { status } = await req.json()
+    const { status, name, description, slug } = await req.json()
 
-    if (!status) {
-      return new NextResponse("Missing status", { status: 400 })
+    const data: any = {}
+    if (status) data.status = status
+    if (name) data.name = name
+    if (description !== undefined) data.description = description
+    if (slug) data.slug = slug
+
+    if (Object.keys(data).length === 0) {
+      return new NextResponse("No fields to update", { status: 400 })
     }
 
     const venture = await prisma.venture.update({
@@ -25,9 +31,7 @@ export async function PATCH(
         id,
         userId
       },
-      data: {
-        status
-      }
+      data
     })
 
     return NextResponse.json(venture)
