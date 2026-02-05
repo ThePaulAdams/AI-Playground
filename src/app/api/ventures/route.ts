@@ -12,6 +12,10 @@ export async function POST(req: Request) {
   try {
     const { name, description, slug } = await req.json()
 
+    if (!name || !slug) {
+      return new NextResponse("Missing required fields", { status: 400 })
+    }
+
     const venture = await prisma.venture.create({
       data: {
         name,
