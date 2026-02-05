@@ -1,6 +1,7 @@
 'use client'
 
 import { Star, MessageSquare, TrendingUp, BarChart3 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface Signal {
   rating: number | null
