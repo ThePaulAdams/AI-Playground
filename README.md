@@ -26,8 +26,19 @@ The "Experiments" era has ended. All previous UI widgets are deprecated or archi
 - **Stripe** (Planned)
 - **Railway** (Infrastructure)
 
+## Operations & Debugging
+This project is hosted on Railway. To ensure the build environment is stable and to debug deployment issues, use the Railway CLI.
+
+### Railway CLI Usage
+- **Auth:** Ensure you are logged in using `railway login`.
+- **Debug Build:** Run `railway run npm run build` to simulate the production build with Railway environment variables.
+- **Logs:** Use `railway logs` to tail production output.
+- **Environment:** Use `railway variables` to check configured secrets (Clerk, DB, etc.).
+
+*The Railway CLI should be the first line of defense for verifying that structural changes don't break the production pipeline.*
+
 ## Deployment
-Each SaaS product lives as a module within this ecosystem or as a separate branch/deployment. The root dashboard at `/` serves as the entry point for all active ventures.
+Each SaaS product lives as a module within this ecosystem. The root dashboard at `/` serves as the entry point for all active ventures.
 
 ---
 *The algorithm has shifted from philosophy to production. Welcome to the Factory.*
