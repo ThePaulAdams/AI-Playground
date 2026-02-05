@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
-import { CreateVentureForm } from '@/components/CreateVentureForm'
+import { CreateVentureForm, DeleteVentureButton } from '@/components/CreateVentureForm'
 import Link from 'next/link'
 
 export default async function VenturesPage() {
@@ -39,7 +39,7 @@ export default async function VenturesPage() {
             ) : (
               ventures.map((venture) => (
                 <div key={venture.id} className="p-6 bg-white/5 rounded-xl border border-white/10 flex justify-between items-center group hover:bg-white/10 transition-colors">
-                  <div>
+                  <div className="flex-1">
                     <h3 className="text-lg font-black uppercase tracking-tight">{venture.name}</h3>
                     <p className="text-sm opacity-60 line-clamp-1">{venture.description}</p>
                     <div className="flex gap-2 mt-2">
@@ -47,12 +47,15 @@ export default async function VenturesPage() {
                       <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 opacity-40 rounded-full uppercase tracking-widest">{venture.slug}</span>
                     </div>
                   </div>
-                  <Link 
-                    href={`/ventures/${venture.slug}`}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity bg-white text-black px-4 py-2 rounded-lg font-bold text-xs uppercase"
-                  >
-                    Manage
-                  </Link>
+                  <div className="flex items-center gap-4">
+                    <Link 
+                      href={`/ventures/${venture.slug}`}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity bg-white text-black px-4 py-2 rounded-lg font-bold text-xs uppercase"
+                    >
+                      Manage
+                    </Link>
+                    <DeleteVentureButton id={venture.id} name={venture.name} />
+                  </div>
                 </div>
               ))
             )}
