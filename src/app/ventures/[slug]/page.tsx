@@ -41,6 +41,8 @@ export default async function VentureDetailsPage({
     ? (venture.feedbacks.reduce((acc, f) => acc + (f.rating || 0), 0) / venture.feedbacks.length).toFixed(1)
     : "N/A"
 
+  const recentFeedback = venture.feedbacks.slice(0, 5)
+
   const serializableFeedbacks = venture.feedbacks.map(f => ({
     ...f,
     createdAt: f.createdAt.toISOString()
@@ -118,6 +120,23 @@ export default async function VentureDetailsPage({
             <div className="text-3xl font-black uppercase tracking-tighter mb-1">{averageRating}</div>
             <p className="text-[10px] italic opacity-30">from {venture.feedbacks.length} signals</p>
           </section>
+
+          {recentFeedback.length > 0 && (
+            <section className="bg-white/[0.02] rounded-3xl border border-white/5 p-8">
+              <h3 className="text-[10px] font-black uppercase tracking-widest mb-6 opacity-30">Recent Activity</h3>
+              <div className="space-y-4">
+                {recentFeedback.map((f) => (
+                  <div key={f.id} className="text-[10px] border-l-2 border-blue-500/20 pl-3 py-1">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-bold opacity-50 uppercase tracking-tighter">{f.email || 'Anonymous'}</span>
+                      <span className="opacity-20">{new Date(f.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <p className="line-clamp-2 opacity-70">{f.content}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
     </div>
