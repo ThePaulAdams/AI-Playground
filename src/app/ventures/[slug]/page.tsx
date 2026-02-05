@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
+import { StatusBadge } from '@/components/shared/StatusBadge'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -43,7 +44,7 @@ export default async function VentureDetailsPage({
           <div>
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-5xl font-black uppercase tracking-tighter">{venture.name}</h1>
-              <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded-md border border-blue-500/20 uppercase tracking-widest">{venture.status}</span>
+              <StatusBadge ventureId={venture.id} currentStatus={venture.status} />
             </div>
             <p className="text-xl opacity-40 max-w-xl font-medium italic">"{venture.description}"</p>
           </div>
