@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 import { StatusBadge } from '@/components/shared/StatusBadge'
+import { EditableDescription } from '@/components/shared/EditableDescription'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -50,7 +51,7 @@ export default async function VentureDetailsPage({
               <h1 className="text-5xl font-black uppercase tracking-tighter">{venture.name}</h1>
               <StatusBadge ventureId={venture.id} currentStatus={venture.status} />
             </div>
-            <p className="text-xl opacity-40 max-w-xl font-medium italic">"{venture.description}"</p>
+            <EditableDescription ventureId={venture.id} initialDescription={venture.description} />
           </div>
           <div className="text-right space-y-4">
             <div>

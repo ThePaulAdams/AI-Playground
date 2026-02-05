@@ -13,10 +13,10 @@ export async function PATCH(
     }
 
     const { id } = await params
-    const { status } = await req.json()
+    const { status, description } = await req.json()
 
-    if (!status) {
-      return new NextResponse("Missing status", { status: 400 })
+    if (!status && description === undefined) {
+      return new NextResponse("Missing data", { status: 400 })
     }
 
     // Verify ownership
@@ -33,9 +33,13 @@ export async function PATCH(
       return new NextResponse('Forbidden', { status: 403 })
     }
 
+    const data: any = {}
+    if (status) data.status = status
+    if (description !== undefined) data.description = description.trim()
+
     const updatedVenture = await prisma.venture.update({
       where: { id },
-      data: { status }
+      data
     })
 
     return NextResponse.json(updatedVenture)
