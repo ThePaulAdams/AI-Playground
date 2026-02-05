@@ -18,13 +18,14 @@ export function CreateVentureForm() {
     const formData = new FormData(e.currentTarget)
     const name = formData.get('name') as string
     const description = formData.get('description') as string
+    const websiteUrl = formData.get('websiteUrl') as string
     const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
 
     try {
       const res = await fetch('/api/ventures', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, slug }),
+        body: JSON.stringify({ name, description, slug, websiteUrl }),
       })
 
       if (!res.ok) {
@@ -59,6 +60,15 @@ export function CreateVentureForm() {
           required 
           className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 min-h-[100px] text-white"
           placeholder="What does this solve?"
+        />
+      </div>
+      <div>
+        <label className="block text-xs font-bold uppercase opacity-50 mb-1">Website URL (Optional)</label>
+        <input 
+          name="websiteUrl" 
+          type="url"
+          className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 text-white"
+          placeholder="https://example.com"
         />
       </div>
       {error && <p className="text-red-500 text-xs">{error}</p>}
