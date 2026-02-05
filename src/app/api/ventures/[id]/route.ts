@@ -2,6 +2,41 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@clerk/nextjs/server'
 
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { userId } = await auth()
+  const { id } = await params
+
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 })
+  }
+
+  try {
+    const { status } = await req.json()
+
+    if (!status) {
+      return new NextResponse("Missing status", { status: 400 })
+    }
+
+    const venture = await prisma.venture.update({
+      where: {
+        id,
+        userId
+      },
+      data: {
+        status
+      }
+    })
+
+    return NextResponse.json(venture)
+  } catch (error: any) {
+    console.error("[VENTURE_PATCH]", error)
+    return new NextResponse("Internal Error", { status: 500 })
+  }
+}
+
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }

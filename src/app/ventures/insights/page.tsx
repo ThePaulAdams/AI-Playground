@@ -21,6 +21,13 @@ export default async function InsightsPage() {
   // Calculate Aggregates
   const totalFeedbacks = ventures.reduce((acc, v) => acc + v.feedbacks.length, 0)
   
+  // Calculate Market Share & Portfolio Distribution
+  const portfolioDistribution = ventures.map(v => ({
+    name: v.name,
+    count: v.feedbacks.length,
+    percentage: totalFeedbacks > 0 ? ((v.feedbacks.length / totalFeedbacks) * 100).toFixed(1) : "0"
+  })).sort((a, b) => Number(b.percentage) - Number(a.percentage))
+
   // Calculate Growth (Feedbacks in the last 7 days)
   const sevenDaysAgo = new Date()
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
@@ -118,6 +125,27 @@ export default async function InsightsPage() {
           </div>
 
           <div className="space-y-6">
+            <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Portfolio Distribution</h2>
+            <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
+              {portfolioDistribution.map((item) => (
+                <div key={item.name} className="space-y-2">
+                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                    <span className="opacity-50">{item.name}</span>
+                    <span className="text-blue-500">{item.percentage}%</span>
+                  </div>
+                  <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-blue-500 rounded-full transition-all duration-1000" 
+                      style={{ width: `${item.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+              {ventures.length === 0 && (
+                <div className="text-[10px] opacity-20 text-center py-4 uppercase font-black">No data available</div>
+              )}
+            </div>
+
             <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Venture Leaderboard</h2>
             <div className="space-y-2">
               {ventures.sort((a, b) => b.feedbacks.length - a.feedbacks.length).map((v) => (
