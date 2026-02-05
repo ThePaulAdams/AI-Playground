@@ -1,95 +1,90 @@
-import { auth } from '@clerk/nextjs/server'
-import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { auth } from '@clerk/nextjs/server'
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { userId } = await auth()
+  const { id } = await params
+
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 })
+  }
+
   try {
-    const { userId } = await auth()
-    if (!userId) {
-      return new NextResponse('Unauthorized', { status: 401 })
-    }
+    const { name, description, status, websiteUrl } = await req.json()
 
-    const { id } = await params
-    const { status, description, name, websiteUrl } = await req.json()
-
-    if (!status && description === undefined && !name && websiteUrl === undefined) {
-      return new NextResponse("Missing data", { status: 400 })
-    }
-
-    // Verify ownership
-    const venture = await prisma.venture.findUnique({
-      where: { id },
-      select: { userId: true }
+    // Ensure the venture belongs to the user
+    const existingVenture = await prisma.venture.findFirst({
+      where: {
+        id,
+        userId
+      }
     })
 
-    if (!venture) {
-      return new NextResponse('Not Found', { status: 404 })
+    if (!existingVenture) {
+      return new NextResponse("Not Found", { status: 404 })
     }
 
-    if (venture.userId !== userId) {
-      return new NextResponse('Forbidden', { status: 403 })
-    }
-
-    const data: any = {}
-    if (status) data.status = status
-    if (description !== undefined) data.description = description.trim()
-    if (name) data.name = name.trim()
-    if (websiteUrl !== undefined) data.websiteUrl = websiteUrl.trim()
-
-    const updatedVenture = await prisma.venture.update({
-      where: { id },
-      data
+    const venture = await prisma.venture.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        description,
+        status,
+        websiteUrl,
+      },
     })
 
-    return NextResponse.json(updatedVenture)
-  } catch (error) {
-    console.error('[VENTURE_PATCH]', error)
-    return new NextResponse('Internal Error', { status: 500 })
+    return NextResponse.json(venture)
+  } catch (error: any) {
+    console.error("[VENTURE_PATCH]", error)
+    return new NextResponse("Internal Error", { status: 500 })
   }
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { userId } = await auth()
+  const { id } = await params
+
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 })
+  }
+
   try {
-    const { userId } = await auth()
-    if (!userId) {
-      return new NextResponse('Unauthorized', { status: 401 })
-    }
-
-    const { id } = await params
-
-    // Verify ownership
-    const venture = await prisma.venture.findUnique({
-      where: { id },
-      select: { userId: true }
+    // Ensure the venture belongs to the user
+    const existingVenture = await prisma.venture.findFirst({
+      where: {
+        id,
+        userId
+      }
     })
 
-    if (!venture) {
-      return new NextResponse('Not Found', { status: 404 })
+    if (!existingVenture) {
+      return new NextResponse("Not Found", { status: 404 })
     }
 
-    if (venture.userId !== userId) {
-      return new NextResponse('Forbidden', { status: 403 })
-    }
-
-    // Delete associated feedbacks first if they exist (though Prisma might handle if cascading)
-    // In our schema, we didn't specify onDelete: Cascade, so let's delete them.
+    // Delete associated feedback first (or let Prisma handle if cascade is set, but explicit is safer here if not defined)
     await prisma.feedback.deleteMany({
       where: { ventureId: id }
     })
 
     await prisma.venture.delete({
-      where: { id }
+      where: {
+        id,
+      },
     })
 
-    return new NextResponse(null, { status: 204 })
-  } catch (error) {
-    console.error('[VENTURE_DELETE]', error)
-    return new NextResponse('Internal Error', { status: 500 })
+    return new NextResponse("Deleted", { status: 200 })
+  } catch (error: any) {
+    console.error("[VENTURE_DELETE]", error)
+    return new NextResponse("Internal Error", { status: 500 })
   }
 }
