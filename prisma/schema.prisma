@@ -10,7 +10,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Venture {
@@ -22,6 +21,7 @@ model Venture {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   userId      String   // Clerk User ID
+  feedbacks   Feedback[]
 }
 
 model Feedback {
