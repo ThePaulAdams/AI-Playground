@@ -78,6 +78,21 @@ export default async function VentureDetailsPage({
         </div>
 
         <div className="space-y-12">
+          <section className="bg-emerald-600/10 rounded-3xl border border-emerald-500/20 p-8">
+            <div className="flex items-center gap-2 mb-6 text-emerald-400">
+              <BarChart3 size={16} />
+              <h3 className="text-xs font-black uppercase tracking-widest">Monetization</h3>
+            </div>
+            <p className="text-xs opacity-60 mb-6 leading-relaxed">Upgrade to FeedbackLoop Pro to unlock custom styling, unlimited signals, and export capabilities.</p>
+            
+            <Link 
+              href="#"
+              className="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl transition-all active:scale-95 text-[10px] uppercase tracking-widest shadow-xl shadow-emerald-500/20"
+            >
+              Coming Soon
+            </Link>
+          </section>
+
           <section className="bg-blue-600/10 rounded-3xl border border-blue-500/20 p-8">
             <div className="flex items-center gap-2 mb-6">
               <Terminal size={16} className="text-blue-400" />
