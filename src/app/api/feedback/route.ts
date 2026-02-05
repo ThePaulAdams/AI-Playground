@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       data: {
         ventureId,
         content,
-        rating: rating ? parseInt(rating) : undefined,
+        rating: rating ? parseInt(rating.toString()) : undefined,
         email,
       },
     })
