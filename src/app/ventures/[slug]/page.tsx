@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 import { StatusBadge } from '@/components/shared/StatusBadge'
+import { VentureSlugEditor } from '@/components/shared/VentureSlugEditor'
 import { EditableHeader } from '@/components/shared/EditableHeader'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
@@ -59,6 +60,7 @@ export default async function VentureDetailsPage({
             <EditableHeader ventureId={venture.id} initialName={venture.name} initialDescription={venture.description} />
           </div>
           <div className="text-right space-y-4">
+            <VentureSlugEditor ventureId={venture.id} initialSlug={venture.slug} />
             <div>
               <span className="block text-[10px] font-black uppercase opacity-20 mb-1 tracking-[0.2em]">Venture Identity</span>
               <code className="bg-white/5 px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/5">{venture.id}</code>

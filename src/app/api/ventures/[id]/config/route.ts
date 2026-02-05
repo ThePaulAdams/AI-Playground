@@ -14,7 +14,20 @@ export async function PATCH(
   }
 
   try {
-    const { name, description, status } = await req.json()
+    const { name, description, status, slug } = await req.json()
+
+    // If slug is provided, check for uniqueness
+    if (slug) {
+      const existing = await prisma.venture.findFirst({
+        where: {
+          slug,
+          NOT: { id }
+        }
+      })
+      if (existing) {
+        return NextResponse.json({ error: "Slug already in use" }, { status: 400 })
+      }
+    }
 
     const venture = await prisma.venture.update({
       where: {
@@ -24,7 +37,8 @@ export async function PATCH(
       data: {
         name,
         description,
-        status
+        status,
+        slug
       },
     })
 
