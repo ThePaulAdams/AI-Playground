@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { name, description, slug } = await req.json()
+    const { name, description, slug, websiteUrl } = await req.json()
 
     if (!name || !slug) {
       return new NextResponse("Missing required fields", { status: 400 })
@@ -31,6 +31,7 @@ export async function POST(req: Request) {
         description,
         slug,
         userId,
+        websiteUrl,
       },
     })
 

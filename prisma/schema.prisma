@@ -21,6 +21,7 @@ model Venture {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   userId      String   // Clerk User ID
+  websiteUrl  String?  // Website being tracked
   feedbacks   Feedback[]
 }
 
