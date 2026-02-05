@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 
 export default async function VentureDetailsPage({
   params
@@ -43,6 +44,9 @@ export default async function VentureDetailsPage({
           <div className="text-right">
             <span className="block text-[10px] font-bold uppercase opacity-40 mb-1">Venture ID</span>
             <code className="bg-white/5 px-2 py-1 rounded text-xs font-mono">{venture.id}</code>
+            <div className="mt-4">
+              <DeleteVentureButton ventureId={venture.id} />
+            </div>
           </div>
         </div>
       </header>
