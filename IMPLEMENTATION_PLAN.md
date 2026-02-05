@@ -8,7 +8,7 @@
 ## Phase 2: FeedbackLoop MVP (In Progress)
 - [x] **Infrastructure:** Generated Prisma Client and updated `package.json` build script.
 - [x] **Task 1:** Create Venture management UI (Create/List) in `/ventures`.
-- [ ] **Task 2:** Build API endpoint for feedback submission (`/api/feedback`).
+- [x] **Task 2:** Build API endpoint for feedback submission (`/api/feedback`).
 - [ ] **Task 3:** Build feedback widget dashboard for individual ventures.
 
 ## Phase 3: Stripe & Scaling
