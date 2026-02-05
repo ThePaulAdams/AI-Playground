@@ -16,6 +16,7 @@ export function Navigation() {
   const links = [
     { href: '/', label: 'Factory', icon: Rocket },
     { href: '/ventures', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/ventures/insights', label: 'Insights', icon: BarChart3 },
   ]
 
   return (
