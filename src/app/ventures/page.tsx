@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { CreateVentureForm } from '@/components/CreateVentureForm'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 import { EditableVentureDescription } from '@/components/shared/EditableVentureDescription'
+import { StatusBadge } from '@/components/shared/StatusBadge'
 import Link from 'next/link'
 
 export default async function VenturesPage() {
@@ -67,20 +68,20 @@ export default async function VenturesPage() {
               </div>
             ) : (
               ventures.map((venture) => (
-                <div key={venture.id} className="p-6 bg-white/5 rounded-xl border border-white/10 flex justify-between items-center group hover:bg-white/10 transition-colors">
+                <div key={venture.id} className="p-6 bg-white/5 rounded-xl border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 group hover:bg-white/10 transition-colors">
                   <div className="flex-1">
                     <h3 className="text-lg font-black uppercase tracking-tight">{venture.name}</h3>
                     <EditableVentureDescription ventureId={venture.id} initialDescription={venture.description || ''} />
-                    <div className="flex gap-2 mt-2">
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-full border border-blue-500/20 uppercase tracking-widest">{venture.status}</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 opacity-40 rounded-full uppercase tracking-widest">{venture.slug}</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-green-500/10 text-green-400 rounded-full border border-green-500/10 uppercase tracking-widest">{venture._count.feedbacks} Signals</span>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      <StatusBadge ventureId={venture.id} currentStatus={venture.status} />
+                      <span className="text-[10px] font-bold px-2 py-0.5 bg-white/5 opacity-40 rounded-md uppercase tracking-widest flex items-center">{venture.slug}</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 bg-green-500/10 text-green-400 rounded-md border border-green-500/10 uppercase tracking-widest flex items-center">{venture._count.feedbacks} Signals</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 self-end md:self-center">
                     <Link 
                       href={`/ventures/${venture.slug}`}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity bg-white text-black px-4 py-2 rounded-lg font-bold text-xs uppercase"
+                      className="opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity bg-white text-black px-4 py-2 rounded-lg font-bold text-xs uppercase"
                     >
                       Manage
                     </Link>
