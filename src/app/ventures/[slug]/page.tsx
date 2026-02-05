@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
+import { IntegrationSnippet } from '@/components/shared/Integrations'
+import { ExternalLink, Terminal } from 'lucide-react'
 
 export default async function VentureDetailsPage({
   params
@@ -31,90 +33,93 @@ export default async function VentureDetailsPage({
   if (!venture) return notFound()
 
   return (
-    <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)] max-w-7xl mx-auto">
       <header className="mb-12">
-        <Link href="/ventures" className="text-sm opacity-50 hover:opacity-100 transition-opacity flex items-center gap-2">
-          <span>←</span> Back to Venture Hub
+        <Link href="/ventures" className="text-[10px] font-black uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity flex items-center gap-2">
+          <span>←</span> Venture Hub
         </Link>
-        <div className="flex justify-between items-end mt-4">
+        <div className="flex justify-between items-end mt-6 border-b border-white/5 pb-8">
           <div>
-            <h1 className="text-4xl font-black uppercase tracking-tighter">{venture.name}</h1>
-            <p className="mt-2 text-xl opacity-60 max-w-xl">{venture.description}</p>
-          </div>
-          <div className="text-right">
-            <span className="block text-[10px] font-bold uppercase opacity-40 mb-1">Venture ID</span>
-            <code className="bg-white/5 px-2 py-1 rounded text-xs font-mono">{venture.id}</code>
-            <div className="mt-4">
-              <DeleteVentureButton ventureId={venture.id} />
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-5xl font-black uppercase tracking-tighter">{venture.name}</h1>
+              <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded-md border border-blue-500/20 uppercase tracking-widest">{venture.status}</span>
             </div>
+            <p className="text-xl opacity-40 max-w-xl font-medium italic">"{venture.description}"</p>
+          </div>
+          <div className="text-right space-y-4">
+            <div>
+              <span className="block text-[10px] font-black uppercase opacity-20 mb-1 tracking-[0.2em]">Venture Identity</span>
+              <code className="bg-white/5 px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/5">{venture.id}</code>
+            </div>
+            <DeleteVentureButton ventureId={venture.id} />
           </div>
         </div>
       </header>
 
-      <main className="space-y-8">
-        <section className="bg-white/5 rounded-2xl border border-white/10 p-8">
-          <h2 className="text-xl font-black uppercase tracking-tight mb-6">Feedback Feed</h2>
-          
-          {venture.feedbacks.length === 0 ? (
-            <div className="p-12 border border-dashed border-white/10 rounded-xl text-center opacity-40">
-              No feedback collected yet for this venture.
+      <main className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-12">
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Feedback Stream</h2>
+              <div className="text-[10px] font-bold opacity-20">{venture.feedbacks.length} Total Signals</div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {venture.feedbacks.map((item) => (
-                <div key={item.id} className="p-6 bg-black/20 rounded-xl border border-white/5">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-blue-400">
-                        {item.rating ? '⭐'.repeat(item.rating) : 'No Rating'}
+            
+            {venture.feedbacks.length === 0 ? (
+              <div className="p-20 border border-dashed border-white/5 rounded-3xl text-center opacity-20">
+                <div className="text-4xl mb-4 text-white/50">📡</div>
+                <div className="text-xs font-black uppercase tracking-widest">Awaiting first signal</div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4">
+                {venture.feedbacks.map((item) => (
+                  <div key={item.id} className="p-8 bg-white/[0.03] rounded-3xl border border-white/5 hover:border-blue-500/30 transition-all group">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className="flex gap-0.5">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <span key={s} className={cn("text-xs", (item.rating || 0) >= s ? "text-blue-500" : "opacity-10")}>✦</span>
+                          ))}
+                        </div>
+                        {item.email && <span className="text-[10px] font-mono opacity-30 group-hover:opacity-100 transition-opacity">{item.email}</span>}
+                      </div>
+                      <span className="text-[10px] opacity-20 uppercase font-mono tracking-tighter">
+                        {item.createdAt.toLocaleDateString()}
                       </span>
-                      {item.email && <span className="text-xs opacity-40">— {item.email}</span>}
                     </div>
-                    <span className="text-[10px] opacity-30 uppercase font-mono">
-                      {item.createdAt.toLocaleDateString()}
-                    </span>
+                    <p className="text-sm leading-relaxed opacity-80">{item.content}</p>
                   </div>
-                  <p className="text-sm leading-relaxed">{item.content}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-blue-600/10 rounded-2xl border border-blue-500/20 p-8">
-            <h3 className="text-lg font-black uppercase tracking-tight mb-2">Live Testing</h3>
-            <p className="text-sm opacity-70 mb-4">View the public feedback widget for this venture.</p>
+        <div className="space-y-12">
+          <section className="bg-blue-600/10 rounded-3xl border border-blue-500/20 p-8">
+            <div className="flex items-center gap-2 mb-6">
+              <Terminal size={16} className="text-blue-400" />
+              <h3 className="text-xs font-black uppercase tracking-widest text-blue-400">Implementation</h3>
+            </div>
+            <p className="text-xs opacity-60 mb-6 leading-relaxed">Embed this capability into any external application using the standardized FeedbackLoop API.</p>
+            
+            <IntegrationSnippet id={venture.id} />
+
             <Link 
               href={`/ventures/${slug}/test`}
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors text-xs uppercase"
+              className="mt-8 flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl transition-all active:scale-95 text-[10px] uppercase tracking-widest shadow-xl shadow-blue-500/20"
             >
-              Launch Test Page
+              Test Live Widget <ExternalLink size={12} />
             </Link>
-          </div>
-
-          <div className="bg-white/5 rounded-2xl border border-white/10 p-8">
-            <h3 className="text-lg font-black uppercase tracking-tight mb-2">Integration Snippet</h3>
-            <p className="text-sm opacity-70 mb-4">Use this ID to submit feedback via the API:</p>
-            <pre className="bg-black/40 p-4 rounded-lg text-xs font-mono overflow-x-auto border border-white/10">
-{`// POST /api/feedback
-{
-  "ventureId": "${venture.id}",
-  "content": "User message here",
-  "rating": 5,
-  "email": "user@example.com"
-}`}
-            </pre>
-          </div>
-        </section>
-
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white/5 rounded-2xl border border-white/10 p-8 flex flex-col justify-center items-center text-center opacity-50 grayscale cursor-not-allowed">
-            <span className="text-3xl mb-2">📈</span>
-            <h3 className="text-lg font-black uppercase tracking-tight">Analytics</h3>
-            <p className="text-xs">Coming soon in Phase 3</p>
-          </div>
-        </section>
+          </section>
+          
+          <section className="bg-white/[0.02] rounded-3xl border border-white/5 p-8 flex flex-col justify-center items-center text-center opacity-30 grayscale pointer-events-none">
+            <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4">
+              <BarChart3 size={20} />
+            </div>
+            <h3 className="text-[10px] font-black uppercase tracking-widest mb-1">Advanced Analytics</h3>
+            <p className="text-[10px] italic opacity-50">Requires Phase 3 Expansion</p>
+          </section>
+        </div>
       </main>
     </div>
   )
