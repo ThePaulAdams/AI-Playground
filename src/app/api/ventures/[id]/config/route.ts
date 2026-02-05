@@ -4,10 +4,10 @@ import { auth } from '@clerk/nextjs/server'
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { userId } = await auth()
-  const { slug } = await params
+  const { id } = await params
 
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 })
@@ -18,7 +18,7 @@ export async function PATCH(
 
     const venture = await prisma.venture.update({
       where: {
-        slug,
+        id,
         userId
       },
       data: {
