@@ -7,7 +7,8 @@ import {
   LayoutDashboard, 
   Rocket, 
   Settings, 
-  BarChart3 
+  BarChart3,
+  CreditCard 
 } from 'lucide-react'
 
 export function Navigation() {
@@ -17,6 +18,7 @@ export function Navigation() {
     { href: '/', label: 'Factory', icon: Rocket },
     { href: '/ventures', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/ventures/insights', label: 'Insights', icon: BarChart3 },
+    { href: '/billing', label: 'Billing', icon: CreditCard },
   ]
 
   return (
