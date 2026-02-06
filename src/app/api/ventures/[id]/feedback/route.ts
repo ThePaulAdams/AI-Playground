@@ -31,7 +31,9 @@ export async function POST(
       },
     })
 
-    return NextResponse.json(feedback)
+    const response = NextResponse.json(feedback)
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    return response
   } catch (error: any) {
     console.error("[FEEDBACK_POST]", error)
     return new NextResponse("Internal Error", { status: 500 })
