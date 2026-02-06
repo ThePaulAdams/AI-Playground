@@ -34,8 +34,9 @@ export function formatRelativeTime(date: string | Date) {
 export function calculateNPS(ratings: number[]): number | string {
   if (ratings.length === 0) return "N/A"
   
-  const promoters = ratings.filter(r => r >= 4).length
-  const detractors = ratings.filter(r => r <= 2).length
+  // Adjusted for 1-5 scale: 5=Promoter, 1-3=Detractor, 4=Passive
+  const promoters = ratings.filter(r => r === 5).length
+  const detractors = ratings.filter(r => r <= 3).length
   const total = ratings.length
   
   return Math.round(((promoters - detractors) / total) * 100)
