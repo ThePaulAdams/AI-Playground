@@ -1,11 +1,12 @@
 'use client'
 
-import { Star, MessageSquare, TrendingUp, BarChart3 } from 'lucide-react'
+import { Star, MessageSquare, TrendingUp, BarChart3, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface Signal {
   rating: number | null
   createdAt: Date | string
+  content?: string
 }
 
 export function SignalStats({ signals }: { signals: Signal[] }) {
@@ -49,7 +50,6 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
   }
 
   // NPS Calculation (Net Promoter Score)
-  // % Promoters (4-5) - % Detractors (1-2)
   const promoterCount = sentimentCounts.positive
   const detractorCount = sentimentCounts.negative
   const respondentCount = ratings.length
@@ -57,8 +57,27 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
     ? Math.round(((promoterCount - detractorCount) / respondentCount) * 100)
     : "N/A"
 
+  // Critical Alert Detection (Negative signals in the last 24h)
+  const criticalAlerts = signals.filter(s => 
+    new Date(s.createdAt) > twentyFourHoursAgo && 
+    s.rating !== null && 
+    s.rating <= 2
+  ).length
+
   return (
     <div className="space-y-4 mb-8">
+      {criticalAlerts > 0 && (
+        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-4 animate-pulse">
+          <div className="p-2 bg-red-500 rounded-lg">
+            <AlertCircle size={16} className="text-white" />
+          </div>
+          <div>
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-red-500">Critical Signals Detected</h4>
+            <p className="text-xs font-bold opacity-80">{criticalAlerts} negative signals received in the last 24 hours.</p>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/20 group-hover:bg-blue-500 transition-colors" />
