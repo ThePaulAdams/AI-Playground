@@ -137,13 +137,12 @@ export function FeedbackList({ initialFeedback, ventureId }: { initialFeedback: 
                     <Calendar size={10} />
                     {new Date(item.createdAt).toLocaleDateString()}
                   </span>
-                  {/* Note: Delete endpoint placeholder, implementation depends on API route existence */}
-                  {/* <button 
+                  <button 
                     onClick={() => deleteFeedback(item.id)}
                     className="opacity-0 group-hover:opacity-100 text-red-500/50 hover:text-red-500 transition-all p-1"
                   >
                     <Trash2 size={14} />
-                  </button> */}
+                  </button>
                 </div>
               </div>
               <p className="text-sm opacity-80 leading-relaxed font-medium">
