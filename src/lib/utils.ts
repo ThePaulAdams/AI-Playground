@@ -39,7 +39,8 @@ export function calculateNPS(ratings: number[]): number | string {
   const detractors = ratings.filter(r => r <= 3).length
   const total = ratings.length
   
-  return Math.round(((promoters - detractors) / total) * 100)
+  const score = Math.round(((promoters - detractors) / total) * 100)
+  return score > 0 ? `+${score}` : score.toString()
 }
 
 export function formatNumber(num: number): string {
