@@ -2,163 +2,111 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Activity, Star, MessageSquare, TrendingUp, TrendingDown } from 'lucide-react'
-import { GlobalStream } from '@/components/insights/GlobalStream'
+import { formatRelativeTime } from '@/lib/utils'
 
 export default async function InsightsPage() {
   const { userId } = await auth()
 
   if (!userId) return notFound()
 
-  const ventures = await prisma.venture.findMany({
-    where: { userId },
-    include: {
-      feedbacks: {
-        orderBy: { createdAt: 'desc' }
+  const feedbacks = await prisma.feedback.findMany({
+    where: {
+      venture: {
+        userId
       }
-    }
+    },
+    include: {
+      venture: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: 50
   })
 
-  // Calculate Aggregates
-  const totalFeedbacks = ventures.reduce((acc, v) => acc + v.feedbacks.length, 0)
-  
-  // Calculate Market Share & Portfolio Distribution
-  const portfolioDistribution = ventures.map(v => ({
-    name: v.name,
-    count: v.feedbacks.length,
-    percentage: totalFeedbacks > 0 ? ((v.feedbacks.length / totalFeedbacks) * 100).toFixed(1) : "0"
-  })).sort((a, b) => Number(b.percentage) - Number(a.percentage))
-
-  // Calculate Growth (Feedbacks in the last 7 days vs previous 7 days)
-  const now = new Date()
-  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-  const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
-
-  const recentFeedbacksCount = ventures.reduce((acc, v) => 
-    acc + v.feedbacks.filter(f => f.createdAt >= sevenDaysAgo).length, 0
-  )
-
-  const previousFeedbacksCount = ventures.reduce((acc, v) => 
-    acc + v.feedbacks.filter(f => f.createdAt >= fourteenDaysAgo && f.createdAt < sevenDaysAgo).length, 0
-  )
-
-  const growthRate = previousFeedbacksCount === 0 
-    ? (recentFeedbacksCount > 0 ? 100 : 0)
-    : Math.round(((recentFeedbacksCount - previousFeedbacksCount) / previousFeedbacksCount) * 100)
-  
-  const allRatings = ventures.flatMap(v => v.feedbacks.map(f => f.rating).filter(r => r !== null)) as number[]
-  const globalAverage = allRatings.length > 0 
-    ? (allRatings.reduce((acc, r) => acc + r, 0) / allRatings.length).toFixed(1)
-    : "0.0"
-
-  const latestFeedbacks = ventures
-    .flatMap(v => v.feedbacks.map(f => ({ ...f, ventureName: v.name, ventureSlug: v.slug })))
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    .slice(0, 10)
+  const stats = await prisma.feedback.groupBy({
+    by: ['rating'],
+    where: {
+      venture: {
+        userId
+      }
+    },
+    _count: true
+  })
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)] max-w-7xl mx-auto">
       <header className="mb-12">
         <Link href="/ventures" className="text-[10px] font-black uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity flex items-center gap-2">
-          <span>←</span> Venture Hub
+          <span>←</span> Back to Hub
         </Link>
-        <h1 className="text-4xl font-black mt-4 uppercase tracking-tighter">Factory Insights</h1>
-        <p className="mt-2 text-xl opacity-60">
-          Global performance across your entire SaaS portfolio.
+        <h1 className="text-4xl font-black mt-4 uppercase tracking-tighter">Global Insights</h1>
+        <p className="mt-2 text-xl opacity-80">
+          Real-time aggregate feedback across all ventures.
         </p>
       </header>
 
-      <main className="space-y-12">
-        {/* Stats Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
-            <div className="flex items-center gap-2 mb-2 opacity-30">
-              <Activity size={14} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Active Ventures</span>
-            </div>
-            <div className="text-3xl font-black">{ventures.length}</div>
-          </div>
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
-            <div className="flex items-center gap-2 mb-2 opacity-30">
-              <MessageSquare size={14} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Total Signals</span>
-            </div>
-            <div className="text-3xl font-black">{totalFeedbacks}</div>
-          </div>
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
-            <div className="flex items-center gap-2 mb-2 opacity-30">
-              <Star size={14} className="text-blue-500" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-500">Global Rating</span>
-            </div>
-            <div className="text-3xl font-black text-blue-500">{globalAverage}</div>
-          </div>
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl relative overflow-hidden group">
-            <div className="flex items-center gap-2 mb-2 opacity-30">
-              <TrendingUp size={14} className="text-green-500" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-green-500">7D Velocity</span>
-            </div>
-            <div className="flex items-baseline gap-2">
-              <div className="text-3xl font-black text-green-500">+{recentFeedbacksCount}</div>
-              <div className={`flex items-center gap-0.5 text-[10px] font-black uppercase tracking-tighter ${growthRate >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                {growthRate >= 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
-                {Math.abs(growthRate)}%
+      <main className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="lg:col-span-1 space-y-4">
+          <h2 className="text-xs font-black uppercase tracking-widest opacity-30 mb-4">Rating Distribution</h2>
+          {[5, 4, 3, 2, 1].map(rating => {
+            const count = stats.find(s => s.rating === rating)?._count || 0
+            const total = stats.reduce((acc, s) => acc + s._count, 0)
+            const percentage = total > 0 ? (count / total) * 100 : 0
+            
+            return (
+              <div key={rating} className="flex items-center gap-4">
+                <span className="text-[10px] font-black w-4">{rating}★</span>
+                <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-blue-500 transition-all" 
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+                <span className="text-[10px] font-black opacity-30 w-8 text-right">{count}</span>
               </div>
-            </div>
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-green-500/10">
-              <div 
-                className="h-full bg-green-500 transition-all duration-1000" 
-                style={{ width: `${Math.min(Math.max(growthRate, 0), 100)}%` }}
-              />
-            </div>
-          </div>
-        </section>
+            )
+          })}
+        </div>
 
-        {/* Global Stream */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2 space-y-6">
-            <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Global Signal Stream</h2>
-            <GlobalStream signals={latestFeedbacks} />
+        <div className="lg:col-span-3">
+          <h2 className="text-xs font-black uppercase tracking-widest opacity-30 mb-6">Latest Signals</h2>
+          <div className="space-y-4">
+            {feedbacks.length === 0 ? (
+              <div className="p-12 border border-dashed border-white/10 rounded-xl text-center opacity-40">
+                No signals captured across any ventures yet.
+              </div>
+            ) : (
+              feedbacks.map((f) => (
+                <div key={f.id} className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl flex flex-col md:flex-row justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded">
+                        {f.venture.name}
+                      </span>
+                      <span className="text-[10px] font-black opacity-20 uppercase tracking-widest">
+                        {formatRelativeTime(f.createdAt)}
+                      </span>
+                    </div>
+                    <p className="text-sm opacity-80 leading-relaxed italic">"{f.content}"</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {f.rating && (
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <div 
+                            key={i} 
+                            className={`w-1.5 h-1.5 rounded-full ${i < f.rating! ? 'bg-blue-500' : 'bg-white/10'}`} 
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-
-          <div className="space-y-6">
-            <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Portfolio Distribution</h2>
-            <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
-              {portfolioDistribution.map((item) => (
-                <Link key={item.name} href={`/ventures/${ventures.find(v => v.name === item.name)?.slug}`} className="block space-y-2 group">
-                  <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                    <span className="opacity-50 group-hover:opacity-100 transition-opacity">{item.name}</span>
-                    <span className="text-blue-500">{item.percentage}%</span>
-                  </div>
-                  <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-blue-500 rounded-full transition-all duration-1000 group-hover:bg-blue-400" 
-                      style={{ width: `${item.percentage}%` }}
-                    />
-                  </div>
-                </Link>
-              ))}
-              {ventures.length === 0 && (
-                <div className="text-[10px] opacity-20 text-center py-4 uppercase font-black">No data available</div>
-              )}
-            </div>
-
-            <h2 className="text-sm font-black uppercase tracking-[0.3em] opacity-30">Venture Leaderboard</h2>
-            <div className="space-y-2">
-              {ventures.sort((a, b) => b.feedbacks.length - a.feedbacks.length).map((v) => (
-                <Link key={v.id} href={`/ventures/${v.slug}`} className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/5 rounded-xl hover:border-blue-500/30 transition-all group">
-                  <div className="flex flex-col">
-                    <span className="text-xs font-black uppercase tracking-tight group-hover:text-blue-400 transition-colors">{v.name}</span>
-                    <span className="text-[9px] opacity-30 uppercase tracking-widest">{v.status}</span>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-black">{v.feedbacks.length}</div>
-                    <div className="text-[8px] opacity-30 uppercase">signals</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        </div>
       </main>
     </div>
   )
