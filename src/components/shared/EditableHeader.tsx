@@ -22,7 +22,7 @@ export function EditableHeader({
   const handleSave = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`/api/ventures/${ventureId}/config`, {
+      const res = await fetch(`/api/ventures/${ventureId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, description }),

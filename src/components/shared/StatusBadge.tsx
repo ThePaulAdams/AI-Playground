@@ -19,7 +19,7 @@ export function StatusBadge({
   const updateStatus = async (status: string) => {
     setLoading(true)
     try {
-      await fetch(`/api/ventures/${ventureId}/config`, {
+      await fetch(`/api/ventures/${ventureId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
