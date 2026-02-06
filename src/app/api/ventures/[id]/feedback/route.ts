@@ -31,6 +31,12 @@ export async function POST(
       },
     })
 
+    // Update the venture's updatedAt timestamp
+    await prisma.venture.update({
+      where: { id },
+      data: { updatedAt: new Date() }
+    })
+
     const response = NextResponse.json(feedback)
     response.headers.set('Access-Control-Allow-Origin', '*')
     return response
