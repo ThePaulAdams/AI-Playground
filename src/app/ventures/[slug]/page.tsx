@@ -7,8 +7,9 @@ import { EditableHeader } from '@/components/shared/EditableHeader'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
 import { SignalStats } from '@/components/shared/SignalStats'
-import { ExternalLink, Terminal, BarChart3, TrendingUp } from 'lucide-react'
+import { ExternalLink, Terminal, BarChart3, TrendingUp, Target } from 'lucide-react'
 import { formatRelativeTime, formatCompactNumber, calculateNPS } from '@/lib/utils'
+import { VentureSlugEditor } from '@/components/shared/VentureSlugEditor'
 
 export default async function VentureDetailsPage({
   params
@@ -58,8 +59,9 @@ export default async function VentureDetailsPage({
         </Link>
         <div className="flex justify-between items-end mt-6 border-b border-white/5 pb-8">
           <div className="flex-1 mr-8">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex items-center gap-3 mb-4">
               <StatusBadge ventureId={venture.id} currentStatus={venture.status} />
+              <VentureSlugEditor ventureId={venture.id} initialSlug={venture.slug} />
             </div>
             <EditableHeader ventureId={venture.id} initialName={venture.name} initialDescription={venture.description} />
           </div>
