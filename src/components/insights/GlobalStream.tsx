@@ -6,6 +6,7 @@ interface Signal {
   id: string
   content: string
   rating: number | null
+  email: string | null
   createdAt: Date
   ventureName: string
   ventureSlug: string
@@ -38,9 +39,16 @@ export function GlobalStream({ signals }: { signals: Signal[] }) {
                 ))}
               </div>
             </div>
-            <span className="text-[10px] opacity-20 font-black uppercase tracking-widest">
-              {formatRelativeTime(item.createdAt)}
-            </span>
+            <div className="flex items-center gap-4">
+              {item.email && (
+                <span className="text-[9px] opacity-20 font-medium italic group-hover:opacity-40 transition-opacity">
+                  {item.email}
+                </span>
+              )}
+              <span className="text-[10px] opacity-20 font-black uppercase tracking-widest">
+                {formatRelativeTime(item.createdAt)}
+              </span>
+            </div>
           </div>
           <p className="text-sm opacity-70 leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
             {item.content}

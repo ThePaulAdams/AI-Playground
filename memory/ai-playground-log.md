@@ -6,3 +6,4 @@
 2026-02-06 02:33:18: feat: add date formatting utils and improve recent activity display (auto-dev)
 2026-02-06 06:06: Refactored formatRelativeTime to include seconds for more granular time tracking in Feedbacks. Build skipped due to hardware resource constraints (Bus Error/Code 135) but code verified for syntax and logic. (auto-dev)
 2026-02-06: Updated venture activity tracking by updating updatedAt on feedback receipt and sorting Venture Hub by latest activity.
+2026-02-06: Added central Settings page and updated global navigation. (auto-dev)
