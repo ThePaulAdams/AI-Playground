@@ -77,7 +77,7 @@ export default async function BillingPage() {
           </ul>
 
           <div className="pt-4">
-            <CheckoutButton />
+            <CheckoutButton ventureId="portfolio" priceId="pro_plan_price_id" />
           </div>
           
           <p className="text-[10px] opacity-30 text-center uppercase font-bold tracking-widest">
