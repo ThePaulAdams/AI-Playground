@@ -2,8 +2,8 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { formatRelativeTime } from '@/lib/utils'
-import { BarChart3, MessageSquare, Star, TrendingUp } from 'lucide-react'
+import { formatRelativeTime, calculateNPS } from '@/lib/utils'
+import { BarChart3, MessageSquare, Star, TrendingUp, Heart } from 'lucide-react'
 
 export default async function InsightsPage() {
   const { userId } = await auth()
@@ -36,6 +36,7 @@ export default async function InsightsPage() {
   })
 
   const totalFeedbacks = feedbacks.length
+  const nps = calculateNPS(feedbacks.map(f => f.rating || 0).filter(r => r > 0))
   const averageRating = totalFeedbacks > 0 
     ? (stats.reduce((acc, s) => acc + (s.rating || 0) * s._count, 0) / totalFeedbacks).toFixed(1)
     : '0.0'
@@ -58,7 +59,7 @@ export default async function InsightsPage() {
           Real-time aggregate feedback across all ventures.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">
           <div className="p-6 bg-blue-500/5 border border-blue-500/10 rounded-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-blue-500/10 rounded-lg">
@@ -82,7 +83,17 @@ export default async function InsightsPage() {
           <div className="p-6 bg-green-500/5 border border-green-500/10 rounded-2xl">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-green-500/10 rounded-lg">
-                <TrendingUp className="text-green-500" size={20} />
+                <Heart className="text-green-500" size={20} />
+              </div>
+              <span className="text-xs font-black uppercase tracking-widest opacity-40">NPS Score</span>
+            </div>
+            <div className="text-4xl font-black">{nps}</div>
+          </div>
+
+          <div className="p-6 bg-purple-500/5 border border-purple-500/10 rounded-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-purple-500/10 rounded-lg">
+                <TrendingUp className="text-purple-500" size={20} />
               </div>
               <span className="text-xs font-black uppercase tracking-widest opacity-40">Venture Mix</span>
             </div>
