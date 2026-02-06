@@ -43,6 +43,28 @@ export function calculateNPS(ratings: number[]): number | string {
   return score > 0 ? `+${score}` : score.toString()
 }
 
+export function calculateSentiment(feedbacks: { rating: number | null }[]): {
+  positive: number;
+  neutral: number;
+  negative: number;
+  total: number;
+} {
+  const ratings = feedbacks.map(f => f.rating || 0).filter(r => r > 0);
+  const total = ratings.length;
+  if (total === 0) return { positive: 0, neutral: 0, negative: 0, total: 0 };
+
+  const positive = ratings.filter(r => r >= 4).length;
+  const neutral = ratings.filter(r => r === 3).length;
+  const negative = ratings.filter(r => r <= 2).length;
+
+  return {
+    positive: Math.round((positive / total) * 100),
+    neutral: Math.round((neutral / total) * 100),
+    negative: Math.round((negative / total) * 100),
+    total
+  };
+}
+
 export function formatNumber(num: number): string {
   return new Intl.NumberFormat('en-GB').format(num)
 }

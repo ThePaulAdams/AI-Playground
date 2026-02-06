@@ -2,8 +2,8 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { formatRelativeTime, calculateNPS } from '@/lib/utils'
-import { BarChart3, MessageSquare, Star, TrendingUp, Heart } from 'lucide-react'
+import { formatRelativeTime, calculateNPS, calculateSentiment } from '@/lib/utils'
+import { BarChart3, MessageSquare, Star, TrendingUp, Heart, Smile, Meh, Frown } from 'lucide-react'
 
 export default async function InsightsPage() {
   const { userId } = await auth()
@@ -44,6 +44,8 @@ export default async function InsightsPage() {
   const ventureCount = await prisma.venture.count({
     where: { userId }
   })
+
+  const sentiment = calculateSentiment(feedbacks)
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)] max-w-7xl mx-auto">
@@ -98,6 +100,32 @@ export default async function InsightsPage() {
               <span className="text-xs font-black uppercase tracking-widest opacity-40">Venture Mix</span>
             </div>
             <div className="text-4xl font-black">{ventureCount}</div>
+          </div>
+        </div>
+
+        {/* Global Sentiment Summary */}
+        <div className="mt-6 p-1 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col md:flex-row items-center gap-4">
+          <div className="flex items-center gap-6 px-8 py-4 border-r border-white/5">
+            <div className="flex items-center gap-2">
+              <Smile className="text-green-500" size={20} />
+              <span className="text-lg font-black">{sentiment.positive}%</span>
+              <span className="text-[10px] font-black uppercase opacity-20 tracking-widest">Positive</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Meh className="text-yellow-500" size={20} />
+              <span className="text-lg font-black">{sentiment.neutral}%</span>
+              <span className="text-[10px] font-black uppercase opacity-20 tracking-widest">Neutral</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Frown className="text-red-500" size={20} />
+              <span className="text-lg font-black">{sentiment.negative}%</span>
+              <span className="text-[10px] font-black uppercase opacity-20 tracking-widest">Negative</span>
+            </div>
+          </div>
+          <div className="flex-1 w-full h-2 md:h-12 flex rounded-2xl overflow-hidden bg-white/5">
+            <div className="h-full bg-green-500/40 transition-all border-r border-white/10" style={{ width: `${sentiment.positive}%` }} />
+            <div className="h-full bg-yellow-500/40 transition-all border-r border-white/10" style={{ width: `${sentiment.neutral}%` }} />
+            <div className="h-full bg-red-500/40 transition-all" style={{ width: `${sentiment.negative}%` }} />
           </div>
         </div>
       </header>
