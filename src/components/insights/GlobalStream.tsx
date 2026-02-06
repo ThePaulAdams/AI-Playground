@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Star, ChevronRight } from 'lucide-react'
+import { formatRelativeTime } from '@/lib/utils'
 
 interface Signal {
   id: string
@@ -37,8 +38,8 @@ export function GlobalStream({ signals }: { signals: Signal[] }) {
                 ))}
               </div>
             </div>
-            <span className="text-[10px] opacity-20 font-mono">
-              {item.createdAt.toLocaleDateString()}
+            <span className="text-[10px] opacity-20 font-black uppercase tracking-widest">
+              {formatRelativeTime(item.createdAt)}
             </span>
           </div>
           <p className="text-sm opacity-70 leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
