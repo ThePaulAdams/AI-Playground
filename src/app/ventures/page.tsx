@@ -16,7 +16,7 @@ export default async function VenturesPage() {
         select: { feedbacks: true }
       }
     },
-    orderBy: { createdAt: 'desc' }
+    orderBy: { updatedAt: 'desc' }
   }) : []
 
   const totalFeedbacks = ventures.reduce((acc, v) => acc + v._count.feedbacks, 0)

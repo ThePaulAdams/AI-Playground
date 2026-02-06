@@ -27,6 +27,12 @@ export async function POST(req: Request) {
       },
     })
 
+    // Update the venture's updatedAt timestamp
+    await prisma.venture.update({
+      where: { id: ventureId },
+      data: { updatedAt: new Date() }
+    })
+
     return NextResponse.json(feedback)
   } catch (error: any) {
     console.error("[FEEDBACK_POST]", error)
