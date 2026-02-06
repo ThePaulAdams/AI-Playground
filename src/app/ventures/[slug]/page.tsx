@@ -8,7 +8,7 @@ import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
 import { SignalStats } from '@/components/shared/SignalStats'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
-import { formatRelativeTime, formatNumber } from '@/lib/utils'
+import { formatRelativeTime, formatCompactNumber } from '@/lib/utils'
 
 export default async function VentureDetailsPage({
   params
@@ -63,7 +63,7 @@ export default async function VentureDetailsPage({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
             <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
               <span className="block text-[10px] font-black uppercase opacity-30 tracking-widest mb-1">Signals</span>
-              <span className="text-2xl font-black">{formatNumber(venture.feedbacks.length)}</span>
+              <span className="text-2xl font-black">{formatCompactNumber(venture.feedbacks.length)}</span>
             </div>
             <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
               <span className="block text-[10px] font-black uppercase opacity-30 tracking-widest mb-1">Avg Rating</span>
