@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { Activity, Star, MessageSquare } from 'lucide-react'
+import { Activity, Star, MessageSquare, TrendingUp, TrendingDown } from 'lucide-react'
 import { GlobalStream } from '@/components/insights/GlobalStream'
 
 export default async function InsightsPage() {
@@ -29,12 +29,22 @@ export default async function InsightsPage() {
     percentage: totalFeedbacks > 0 ? ((v.feedbacks.length / totalFeedbacks) * 100).toFixed(1) : "0"
   })).sort((a, b) => Number(b.percentage) - Number(a.percentage))
 
-  // Calculate Growth (Feedbacks in the last 7 days)
-  const sevenDaysAgo = new Date()
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+  // Calculate Growth (Feedbacks in the last 7 days vs previous 7 days)
+  const now = new Date()
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+  const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+
   const recentFeedbacksCount = ventures.reduce((acc, v) => 
     acc + v.feedbacks.filter(f => f.createdAt >= sevenDaysAgo).length, 0
   )
+
+  const previousFeedbacksCount = ventures.reduce((acc, v) => 
+    acc + v.feedbacks.filter(f => f.createdAt >= fourteenDaysAgo && f.createdAt < sevenDaysAgo).length, 0
+  )
+
+  const growthRate = previousFeedbacksCount === 0 
+    ? (recentFeedbacksCount > 0 ? 100 : 0)
+    : Math.round(((recentFeedbacksCount - previousFeedbacksCount) / previousFeedbacksCount) * 100)
   
   const allRatings = ventures.flatMap(v => v.feedbacks.map(f => f.rating).filter(r => r !== null)) as number[]
   const globalAverage = allRatings.length > 0 
@@ -82,12 +92,24 @@ export default async function InsightsPage() {
             </div>
             <div className="text-3xl font-black text-blue-500">{globalAverage}</div>
           </div>
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
+          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl relative overflow-hidden group">
             <div className="flex items-center gap-2 mb-2 opacity-30">
-              <Activity size={14} className="text-green-500" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-green-500">7D Growth</span>
+              <TrendingUp size={14} className="text-green-500" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-green-500">7D Velocity</span>
             </div>
-            <div className="text-3xl font-black text-green-500">+{recentFeedbacksCount}</div>
+            <div className="flex items-baseline gap-2">
+              <div className="text-3xl font-black text-green-500">+{recentFeedbacksCount}</div>
+              <div className={`flex items-center gap-0.5 text-[10px] font-black uppercase tracking-tighter ${growthRate >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {growthRate >= 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
+                {Math.abs(growthRate)}%
+              </div>
+            </div>
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-green-500/10">
+              <div 
+                className="h-full bg-green-500 transition-all duration-1000" 
+                style={{ width: `${Math.min(Math.max(growthRate, 0), 100)}%` }}
+              />
+            </div>
           </div>
         </section>
 
