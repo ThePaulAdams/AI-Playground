@@ -21,9 +21,9 @@ export function formatRelativeTime(date: string | Date) {
   const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000)
 
   if (diffInSeconds < 0) return 'in the future'
-  if (diffInSeconds < 5) return 'just now'
-  if (diffInSeconds < 60) return `${diffInSeconds}s ago`
-  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`
+    if (diffInSeconds < 5) return 'just now'
+    if (diffInSeconds < 60) return 'less than 1m ago'
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`
   if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`
   if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}w ago`
