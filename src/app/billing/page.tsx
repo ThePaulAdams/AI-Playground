@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { CreditCard, Zap, Shield, CheckCircle2 } from 'lucide-react'
+import { Zap, Shield, CheckCircle2 } from 'lucide-react'
 import { CheckoutButton } from '@/components/shared/CheckoutButton'
 
 export default async function BillingPage() {

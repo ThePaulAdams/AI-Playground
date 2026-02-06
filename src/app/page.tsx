@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Rocket, Github, Activity, Target, Zap, Shield } from 'lucide-react';
+import { Rocket, Github, Activity, Target, Zap } from 'lucide-react';
 
 export default function Home() {
   return (

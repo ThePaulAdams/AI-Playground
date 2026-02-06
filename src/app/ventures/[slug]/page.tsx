@@ -2,15 +2,13 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { DeleteVentureButton } from '@/components/shared/DeleteVentureButton'
 import { StatusBadge } from '@/components/shared/StatusBadge'
-import { VentureSlugEditor } from '@/components/shared/VentureSlugEditor'
 import { EditableHeader } from '@/components/shared/EditableHeader'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
 import { SignalStats } from '@/components/shared/SignalStats'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
-import { cn, formatRelativeTime, formatNumber } from '@/lib/utils'
+import { formatRelativeTime, formatNumber } from '@/lib/utils'
 
 export default async function VentureDetailsPage({
   params
