@@ -32,6 +32,13 @@ export function formatRelativeTime(date: string | Date) {
   return `${Math.floor(diffInSeconds / 31536000)}yrs ago`
 }
 
+export function formatCurrency(amount: number, currency: string = 'USD'): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  }).format(amount)
+}
+
 export function calculateNPS(ratings: number[]): number | string {
   if (ratings.length === 0) return "N/A"
   

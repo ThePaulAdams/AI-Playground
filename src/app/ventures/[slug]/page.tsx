@@ -7,8 +7,8 @@ import { EditableHeader } from '@/components/shared/EditableHeader'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
 import { SignalStats } from '@/components/shared/SignalStats'
-import { ExternalLink, Terminal, BarChart3, TrendingUp, Target } from 'lucide-react'
-import { formatRelativeTime, formatCompactNumber, calculateNPS } from '@/lib/utils'
+import { ExternalLink, Terminal, BarChart3, TrendingUp, Target, DollarSign } from 'lucide-react'
+import { formatRelativeTime, formatCompactNumber, calculateNPS, formatCurrency } from '@/lib/utils'
 import { VentureSlugEditor } from '@/components/shared/VentureSlugEditor'
 
 export default async function VentureDetailsPage({
@@ -79,8 +79,8 @@ export default async function VentureDetailsPage({
               <span className="text-2xl font-black text-orange-400">{nps}</span>
             </div>
             <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-              <span className="block text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Conversion</span>
-              <span className="text-2xl font-black text-blue-400">0%</span>
+              <span className="block text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Projected MRR</span>
+              <span className="text-2xl font-black text-blue-400">{formatCurrency(0)}</span>
             </div>
           </div>
         </div>
