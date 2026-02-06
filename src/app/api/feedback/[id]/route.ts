@@ -20,6 +20,9 @@ export async function DELETE(
 
     return NextResponse.json(feedback)
   } catch (error: any) {
+    if (error.code === 'P2025') {
+      return new NextResponse("Feedback not found", { status: 404 })
+    }
     console.error("[FEEDBACK_DELETE]", error)
     return new NextResponse("Internal Error", { status: 500 })
   }
