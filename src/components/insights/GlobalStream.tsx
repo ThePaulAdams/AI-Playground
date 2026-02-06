@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Star } from 'lucide-react'
+import { Star, ChevronRight } from 'lucide-react'
 
 interface Signal {
   id: string
@@ -41,7 +41,15 @@ export function GlobalStream({ signals }: { signals: Signal[] }) {
               {item.createdAt.toLocaleDateString()}
             </span>
           </div>
-          <p className="text-sm opacity-70 leading-relaxed">{item.content}</p>
+          <p className="text-sm opacity-70 leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
+            {item.content}
+          </p>
+          <Link 
+            href={`/ventures/${item.ventureSlug}`}
+            className="absolute right-6 bottom-6 opacity-0 group-hover:opacity-40 hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0"
+          >
+            <ChevronRight size={16} />
+          </Link>
         </div>
       ))}
     </div>
