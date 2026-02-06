@@ -27,11 +27,14 @@ export function EditableHeader({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, description }),
       })
-      if (!res.ok) throw new Error()
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(errorData.error || 'Failed to update')
+      }
       setIsEditing(false)
       router.refresh()
-    } catch {
-      alert('Failed to update')
+    } catch (err: any) {
+      alert(err.message || 'Failed to update')
     } finally {
       setLoading(false)
     }

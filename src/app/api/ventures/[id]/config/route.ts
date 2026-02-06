@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@clerk/nextjs/server'
 
-export async function PATCH(
+export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -14,37 +14,45 @@ export async function PATCH(
   }
 
   try {
-    const { name, description, status, slug } = await req.json()
+    const { name, description, slug, status } = await req.json()
 
-    // If slug is provided, check for uniqueness
-    if (slug) {
-      const existing = await prisma.venture.findFirst({
-        where: {
-          slug,
-          NOT: { id }
-        }
+    // Ensure the venture belongs to the user
+    const existingVenture = await prisma.venture.findUnique({
+      where: { id, userId }
+    })
+
+    if (!existingVenture) {
+      return new NextResponse("Venture not found", { status: 404 })
+    }
+
+    const data: any = {}
+    if (name) data.name = name
+    if (description !== undefined) data.description = description
+    if (status) data.status = status
+    
+    if (slug && slug !== existingVenture.slug) {
+      // Check if new slug is taken
+      const slugTaken = await prisma.venture.findUnique({
+        where: { slug }
       })
-      if (existing) {
-        return NextResponse.json({ error: "Slug already in use" }, { status: 400 })
+      if (slugTaken) {
+        return NextResponse.json({ error: "Path already in use" }, { status: 400 })
       }
+      data.slug = slug
+    }
+
+    if (Object.keys(data).length === 0) {
+      return new NextResponse("No fields to update", { status: 400 })
     }
 
     const venture = await prisma.venture.update({
-      where: {
-        id,
-        userId
-      },
-      data: {
-        name,
-        description,
-        status,
-        slug
-      },
+      where: { id },
+      data
     })
 
     return NextResponse.json(venture)
   } catch (error: any) {
-    console.error("[VENTURE_PATCH]", error)
+    console.error("[VENTURE_CONFIG_PATCH]", error)
     return new NextResponse("Internal Error", { status: 500 })
   }
 }
