@@ -19,7 +19,6 @@ export function Navigation() {
     { href: '/ventures', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/ventures/insights', label: 'Insights', icon: BarChart3 },
     { href: '/billing', label: 'Billing', icon: CreditCard },
-    { href: '/settings', label: 'Settings', icon: Settings },
   ]
 
   return (

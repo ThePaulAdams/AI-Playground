@@ -47,6 +47,17 @@ export function FeedbackWidget({ ventureId }: { ventureId: string }) {
         >
           Send Another
         </button>
+        <div className="mt-8 pt-8 border-t border-emerald-500/10">
+          <p className="text-[10px] font-black uppercase tracking-widest text-emerald-500/40 mb-4">Want this for your own app?</p>
+          <a
+            href="https://factory.paul.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest bg-emerald-500 text-black px-6 py-3 rounded-xl hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20"
+          >
+            Powered by SaaS Factory
+          </a>
+        </div>
       </div>
     )
   }
