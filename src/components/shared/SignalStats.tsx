@@ -41,46 +41,93 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
     ? (recentSignals > 0 ? 100 : 0)
     : Math.round(((recentSignals - previousSignals) / previousSignals) * 100)
 
+  // Sentiment Distribution
+  const sentimentCounts = {
+    positive: ratings.filter(r => r >= 4).length,
+    neutral: ratings.filter(r => r === 3).length,
+    negative: ratings.filter(r => r <= 2).length,
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-      <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/20 group-hover:bg-blue-500 transition-colors" />
-        <div className="w-10 h-10 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-          <Star size={18} className="text-blue-500" />
+    <div className="space-y-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/20 group-hover:bg-blue-500 transition-colors" />
+          <div className="w-10 h-10 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <Star size={18} className="text-blue-500" />
+          </div>
+          <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Avg Rating</h3>
+          <div className="text-2xl font-black uppercase tracking-tighter text-blue-400">{averageRating}</div>
         </div>
-        <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Avg Rating</h3>
-        <div className="text-2xl font-black uppercase tracking-tighter text-blue-400">{averageRating}</div>
+
+        <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-purple-500/20 group-hover:bg-purple-500 transition-colors" />
+          <div className="w-10 h-10 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <MessageSquare size={18} className="text-purple-500" />
+          </div>
+          <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Total Signals</h3>
+          <div className="text-2xl font-black uppercase tracking-tighter text-purple-400">{signals.length}</div>
+          <div className="mt-1 flex items-center gap-1.5">
+            {recentSignals > 0 && (
+              <div className="text-[8px] font-black text-purple-500/60 uppercase">+{recentSignals} in 24h</div>
+            )}
+            {signalGrowth !== 0 && (
+              <div className={cn(
+                "text-[8px] font-black uppercase px-1.5 py-0.5 rounded-md",
+                signalGrowth > 0 ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+              )}>
+                {signalGrowth > 0 ? '↑' : '↓'} {Math.abs(signalGrowth)}%
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/20 group-hover:bg-emerald-500 transition-colors" />
+          <div className="w-10 h-10 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <TrendingUp size={18} className="text-emerald-500" />
+          </div>
+          <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Satisfaction</h3>
+          <div className="text-2xl font-black uppercase tracking-tighter text-emerald-400">{satisfactionPercent}%</div>
+        </div>
       </div>
 
-      <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-purple-500/20 group-hover:bg-purple-500 transition-colors" />
-        <div className="w-10 h-10 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-          <MessageSquare size={18} className="text-purple-500" />
+      <div className="p-4 bg-white/[0.01] border border-white/5 rounded-2xl">
+        <div className="flex justify-between items-center mb-2">
+          <h4 className="text-[10px] font-black uppercase tracking-widest opacity-30">Sentiment Distribution</h4>
+          <span className="text-[10px] font-bold opacity-20">{ratings.length} Rated Signals</span>
         </div>
-        <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Total Signals</h3>
-        <div className="text-2xl font-black uppercase tracking-tighter text-purple-400">{signals.length}</div>
-        <div className="mt-1 flex items-center gap-1.5">
-          {recentSignals > 0 && (
-            <div className="text-[8px] font-black text-purple-500/60 uppercase">+{recentSignals} in 24h</div>
-          )}
-          {signalGrowth !== 0 && (
-            <div className={cn(
-              "text-[8px] font-black uppercase px-1.5 py-0.5 rounded-md",
-              signalGrowth > 0 ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
-            )}>
-              {signalGrowth > 0 ? '↑' : '↓'} {Math.abs(signalGrowth)}%
-            </div>
-          )}
+        <div className="flex h-1.5 w-full rounded-full overflow-hidden bg-white/5">
+          <div 
+            className="bg-emerald-500 transition-all duration-500" 
+            style={{ width: `${(sentimentCounts.positive / (ratings.length || 1)) * 100}%` }}
+            title={`Positive: ${sentimentCounts.positive}`}
+          />
+          <div 
+            className="bg-yellow-500/50 transition-all duration-500" 
+            style={{ width: `${(sentimentCounts.neutral / (ratings.length || 1)) * 100}%` }}
+            title={`Neutral: ${sentimentCounts.neutral}`}
+          />
+          <div 
+            className="bg-red-500 transition-all duration-500" 
+            style={{ width: `${(sentimentCounts.negative / (ratings.length || 1)) * 100}%` }}
+            title={`Negative: ${sentimentCounts.negative}`}
+          />
         </div>
-      </div>
-
-      <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/20 group-hover:bg-emerald-500 transition-colors" />
-        <div className="w-10 h-10 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-          <TrendingUp size={18} className="text-emerald-500" />
+        <div className="flex gap-4 mt-2">
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span className="text-[9px] font-bold uppercase opacity-40">Positive ({sentimentCounts.positive})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+            <span className="text-[9px] font-bold uppercase opacity-40">Neutral ({sentimentCounts.neutral})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+            <span className="text-[9px] font-bold uppercase opacity-40">Negative ({sentimentCounts.negative})</span>
+          </div>
         </div>
-        <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Satisfaction</h3>
-        <div className="text-2xl font-black uppercase tracking-tighter text-emerald-400">{satisfactionPercent}%</div>
       </div>
     </div>
   )
