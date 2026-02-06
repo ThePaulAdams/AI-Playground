@@ -28,8 +28,8 @@ export function formatRelativeTime(date: string | Date) {
   if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`
   if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}w ago`
   if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)}mo ago`
-  if (diffInSeconds < 63072000) return '1y ago'
-  return `${Math.floor(diffInSeconds / 31536000)}y ago`
+  if (diffInSeconds < 63072000) return '1yr ago'
+  return `${Math.floor(diffInSeconds / 31536000)}yrs ago`
 }
 
 export function calculateNPS(ratings: number[]): number | string {
