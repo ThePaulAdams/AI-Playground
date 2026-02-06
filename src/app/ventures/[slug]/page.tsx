@@ -10,7 +10,7 @@ import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
 import { SignalStats } from '@/components/shared/SignalStats'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
-import { cn, formatRelativeTime } from '@/lib/utils'
+import { cn, formatRelativeTime, formatNumber } from '@/lib/utils'
 
 export default async function VentureDetailsPage({
   params
@@ -62,13 +62,23 @@ export default async function VentureDetailsPage({
             </div>
             <EditableHeader ventureId={venture.id} initialName={venture.name} initialDescription={venture.description} />
           </div>
-          <div className="text-right space-y-4">
-            <VentureSlugEditor ventureId={venture.id} initialSlug={venture.slug} />
-            <div>
-              <span className="block text-[10px] font-black uppercase opacity-20 mb-1 tracking-[0.2em]">Venture Identity</span>
-              <code className="bg-white/5 px-3 py-1.5 rounded-lg text-[10px] font-mono border border-white/5">{venture.id}</code>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+            <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+              <span className="block text-[10px] font-black uppercase opacity-30 tracking-widest mb-1">Signals</span>
+              <span className="text-2xl font-black">{formatNumber(venture.feedbacks.length)}</span>
             </div>
-            <DeleteVentureButton ventureId={venture.id} />
+            <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+              <span className="block text-[10px] font-black uppercase opacity-30 tracking-widest mb-1">Avg Rating</span>
+              <span className="text-2xl font-black">{averageRating}</span>
+            </div>
+            <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+              <span className="block text-[10px] font-black uppercase opacity-30 tracking-widest mb-1">Status</span>
+              <span className="text-2xl font-black text-blue-400">{venture.status}</span>
+            </div>
+            <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+              <span className="block text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Conversion</span>
+              <span className="text-2xl font-black text-blue-400">0%</span>
+            </div>
           </div>
         </div>
       </header>

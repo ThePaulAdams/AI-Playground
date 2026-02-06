@@ -26,5 +26,13 @@ export function formatRelativeTime(date: string | Date) {
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`
   if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`
   
-  return formatDate(date)
+export function formatNumber(num: number): string {
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M'
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'k'
+  return num.toString()
+}
+
+export function truncate(str: string, length: number) {
+  if (str.length <= length) return str
+  return str.slice(0, length) + '...'
 }
