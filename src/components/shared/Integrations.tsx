@@ -6,14 +6,11 @@ import { Check, Copy } from 'lucide-react'
 export function IntegrationSnippet({ id }: { id: string }) {
   const [copied, setCheck] = useState(false)
 
-  const snippet = `// FeedbackLoop Integration
-// POST /api/feedback
-{
-  "ventureId": "${id}",
-  "content": "User message here",
-  "rating": 5,
-  "email": "user@example.com"
-}`
+  const snippet = `<!-- FeedbackLoop Widget -->
+<iframe
+  src="${process.env.NEXT_PUBLIC_APP_URL || 'https://ai-playground.railway.app'}/embed/${id}"
+  style="border:none;width:100%;height:400px;"
+></iframe>`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(snippet)
