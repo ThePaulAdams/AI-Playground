@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Filter, Trash2, Search, Calendar, Star } from 'lucide-react'
+import { Filter, Trash2, Search, Calendar, Star, Download } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface Feedback {
@@ -17,6 +17,7 @@ export function FeedbackList({ initialFeedback, ventureId }: { initialFeedback: 
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [ratingFilter, setRatingFilter] = useState<number | null>(null)
+  const [isExporting, setIsExporting] = useState(false)
 
   const refreshFeedback = async () => {
     setLoading(true)
@@ -30,6 +31,39 @@ export function FeedbackList({ initialFeedback, ventureId }: { initialFeedback: 
       console.error('Failed to fetch feedback:', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const exportToCSV = () => {
+    setIsExporting(true)
+    try {
+      const headers = ['ID', 'Content', 'Rating', 'Email', 'CreatedAt']
+      const rows = filteredFeedbacks.map(f => [
+        f.id,
+        `"${f.content.replace(/"/g, '""')}"`,
+        f.rating || '',
+        f.email || '',
+        f.createdAt
+      ])
+      
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(r => r.join(','))
+      ].join('\n')
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('download', `signals-${ventureId}-${new Date().toISOString().split('T')[0]}.csv`)
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (err) {
+      console.error('Failed to export CSV:', err)
+    } finally {
+      setIsExporting(false)
     }
   }
 
@@ -74,6 +108,15 @@ export function FeedbackList({ initialFeedback, ventureId }: { initialFeedback: 
             className="text-[10px] font-black uppercase px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-all active:scale-95 shadow-lg shadow-blue-500/10"
           >
             {loading ? 'Polling...' : 'Refresh'}
+          </button>
+          <button 
+            onClick={exportToCSV}
+            disabled={isExporting || filteredFeedbacks.length === 0}
+            className="text-[10px] font-black uppercase px-4 py-2 bg-white/5 text-white/50 rounded-xl border border-white/10 hover:bg-white/10 hover:text-white disabled:opacity-30 transition-all active:scale-95 flex items-center gap-2"
+            title="Export to CSV"
+          >
+            <Download size={14} />
+            <span className="hidden sm:inline">{isExporting ? 'Exporting...' : 'Export'}</span>
           </button>
         </div>
       </div>
