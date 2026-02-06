@@ -20,12 +20,14 @@ export function formatRelativeTime(date: string | Date) {
   const then = new Date(date)
   const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000)
 
+  if (diffInSeconds < 0) return 'in the future'
   if (diffInSeconds < 5) return 'just now'
   if (diffInSeconds < 60) return `${diffInSeconds}s ago`
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`
   if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`
-  return new Date(date).toLocaleDateString()
+  if (diffInSeconds < 2419200) return `${Math.floor(diffInSeconds / 604800)}w ago`
+  return new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 }
 
 export function formatNumber(num: number): string {
