@@ -12,6 +12,9 @@ export default async function VenturesPage() {
   const ventures = userId ? await prisma.venture.findMany({
     where: { userId },
     include: {
+      feedbacks: {
+        select: { rating: true }
+      },
       _count: {
         select: { feedbacks: true }
       }
@@ -21,6 +24,9 @@ export default async function VenturesPage() {
 
   const totalFeedbacks = ventures.reduce((acc, v) => acc + v._count.feedbacks, 0)
   const activeVentures = ventures.filter(v => v.status !== 'DRAFT').length
+  const avgRating = totalFeedbacks > 0 
+    ? (ventures.reduce((acc, v) => acc + (v.feedbacks?.reduce((a, f) => a + (f.rating || 0), 0) || 0), 0) / totalFeedbacks).toFixed(1)
+    : "0.0"
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -47,8 +53,8 @@ export default async function VenturesPage() {
             <span className="text-2xl font-black">{totalFeedbacks}</span>
           </div>
           <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-            <span className="block text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Conversion</span>
-            <span className="text-2xl font-black text-blue-400">0%</span>
+            <span className="block text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Avg Rating</span>
+            <span className="text-2xl font-black text-blue-400">{avgRating}</span>
           </div>
         </div>
       </header>
