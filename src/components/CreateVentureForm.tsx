@@ -10,6 +10,12 @@ export function CreateVentureForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const [websiteUrl, setWebsiteUrl] = useState('')
+
+  const generateSlug = (name: string) => {
+    return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
@@ -19,7 +25,9 @@ export function CreateVentureForm() {
     const name = formData.get('name') as string
     const description = formData.get('description') as string
     const websiteUrl = formData.get('websiteUrl') as string
-    let slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    const customSlug = formData.get('slug') as string
+    
+    let slug = customSlug || generateSlug(name)
     
     // If name is too short or all special chars, slug might be empty
     if (!slug) {
@@ -54,6 +62,7 @@ export function CreateVentureForm() {
 
       router.refresh()
       e.currentTarget.reset()
+      setWebsiteUrl('')
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -73,11 +82,22 @@ export function CreateVentureForm() {
         />
       </div>
       <div>
+        <label className="block text-xs font-bold uppercase opacity-50 mb-1">Custom Slug (Optional)</label>
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs opacity-30">/</span>
+          <input 
+            name="slug" 
+            className="w-full bg-black/20 border border-white/10 rounded-lg pl-6 pr-4 py-2 text-sm focus:outline-none focus:border-blue-500 text-white font-mono"
+            placeholder="my-cool-saas"
+          />
+        </div>
+      </div>
+      <div>
         <label className="block text-xs font-bold uppercase opacity-50 mb-1">Description</label>
         <textarea 
           name="description" 
           required 
-          className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 min-h-[100px] text-white"
+          className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 min-h-[80px] text-white"
           placeholder="What does this solve?"
         />
       </div>
@@ -86,6 +106,8 @@ export function CreateVentureForm() {
         <input 
           name="websiteUrl" 
           type="url"
+          value={websiteUrl}
+          onChange={(e) => setWebsiteUrl(e.target.value)}
           className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 text-white"
           placeholder="https://example.com"
         />
