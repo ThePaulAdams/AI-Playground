@@ -48,9 +48,18 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
     negative: ratings.filter(r => r <= 2).length,
   }
 
+  // NPS Calculation (Net Promoter Score)
+  // % Promoters (4-5) - % Detractors (1-2)
+  const promoterCount = sentimentCounts.positive
+  const detractorCount = sentimentCounts.negative
+  const respondentCount = ratings.length
+  const nps = respondentCount > 0 
+    ? Math.round(((promoterCount - detractorCount) / respondentCount) * 100)
+    : "N/A"
+
   return (
     <div className="space-y-4 mb-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/20 group-hover:bg-blue-500 transition-colors" />
           <div className="w-10 h-10 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
@@ -58,6 +67,15 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
           </div>
           <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Avg Rating</h3>
           <div className="text-2xl font-black uppercase tracking-tighter text-blue-400">{averageRating}</div>
+        </div>
+
+        <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-orange-500/20 group-hover:bg-orange-500 transition-colors" />
+          <div className="w-10 h-10 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <TrendingUp size={18} className="text-orange-500" />
+          </div>
+          <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">NPS</h3>
+          <div className="text-2xl font-black uppercase tracking-tighter text-orange-400">{nps}</div>
         </div>
 
         <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
@@ -85,7 +103,7 @@ export function SignalStats({ signals }: { signals: Signal[] }) {
         <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl flex flex-col justify-center items-center text-center group hover:bg-white/[0.04] transition-colors relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/20 group-hover:bg-emerald-500 transition-colors" />
           <div className="w-10 h-10 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-            <TrendingUp size={18} className="text-emerald-500" />
+            <BarChart3 size={18} className="text-emerald-500" />
           </div>
           <h3 className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-50">Satisfaction</h3>
           <div className="text-2xl font-black uppercase tracking-tighter text-emerald-400">{satisfactionPercent}%</div>
