@@ -10,7 +10,7 @@ import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
 import { SignalStats } from '@/components/shared/SignalStats'
 import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, formatRelativeTime } from '@/lib/utils'
 
 export default async function VentureDetailsPage({
   params
@@ -122,7 +122,7 @@ export default async function VentureDetailsPage({
                   <div key={f.id} className="text-[10px] border-l-2 border-blue-500/20 pl-3 py-1">
                     <div className="flex justify-between items-center mb-1">
                       <span className="font-bold opacity-50 uppercase tracking-tighter">{f.email || 'Anonymous'}</span>
-                      <span className="opacity-20">{new Date(f.createdAt).toLocaleDateString()}</span>
+                      <span className="opacity-20">{formatRelativeTime(f.createdAt)}</span>
                     </div>
                     <p className="line-clamp-2 opacity-70">{f.content}</p>
                   </div>
