@@ -31,6 +31,16 @@ export function formatRelativeTime(date: string | Date) {
   return `${Math.floor(diffInSeconds / 31536000)}y ago`
 }
 
+export function calculateNPS(ratings: number[]): number | string {
+  if (ratings.length === 0) return "N/A"
+  
+  const promoters = ratings.filter(r => r >= 4).length
+  const detractors = ratings.filter(r => r <= 2).length
+  const total = ratings.length
+  
+  return Math.round(((promoters - detractors) / total) * 100)
+}
+
 export function formatNumber(num: number): string {
   return new Intl.NumberFormat('en-GB').format(num)
 }

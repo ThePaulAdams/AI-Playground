@@ -7,8 +7,8 @@ import { EditableHeader } from '@/components/shared/EditableHeader'
 import { IntegrationSnippet } from '@/components/shared/Integrations'
 import { FeedbackList } from '@/components/FeedbackList'
 import { SignalStats } from '@/components/shared/SignalStats'
-import { ExternalLink, Terminal, BarChart3 } from 'lucide-react'
-import { formatRelativeTime, formatCompactNumber } from '@/lib/utils'
+import { ExternalLink, Terminal, BarChart3, TrendingUp } from 'lucide-react'
+import { formatRelativeTime, formatCompactNumber, calculateNPS } from '@/lib/utils'
 
 export default async function VentureDetailsPage({
   params
@@ -39,6 +39,9 @@ export default async function VentureDetailsPage({
   const averageRating = venture.feedbacks.length > 0 
     ? (venture.feedbacks.reduce((acc, f) => acc + (f.rating || 0), 0) / venture.feedbacks.length).toFixed(1)
     : "N/A"
+  
+  const ratings = venture.feedbacks.map(f => f.rating).filter((r): r is number => r !== null)
+  const nps = calculateNPS(ratings)
 
   const recentFeedback = venture.feedbacks.slice(0, 5)
 
@@ -70,8 +73,8 @@ export default async function VentureDetailsPage({
               <span className="text-2xl font-black">{averageRating}</span>
             </div>
             <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
-              <span className="block text-[10px] font-black uppercase opacity-30 tracking-widest mb-1">Status</span>
-              <span className="text-2xl font-black text-blue-400">{venture.status}</span>
+              <span className="block text-[10px] font-black uppercase opacity-30 tracking-widest mb-1">Net Promoter (NPS)</span>
+              <span className="text-2xl font-black text-orange-400">{nps}</span>
             </div>
             <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
               <span className="block text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Conversion</span>
